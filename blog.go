@@ -1,15 +1,12 @@
 package blog
 
 import (
+    "fmt"
     "net/http"
-    "github.com/labstack/echo"
 )
 
-
 func init() {
-    e := echo.New()
-    e.GET("/", func(c echo.Context) error {
-        return c.String(http.StatusOK, "Hello, World!")
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprint(w, "Hello, world!")
     })
-    http.Handle("/", e)
 }
