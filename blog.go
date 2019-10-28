@@ -33,6 +33,9 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", rootHandler)
+
+	appengine.Main()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
