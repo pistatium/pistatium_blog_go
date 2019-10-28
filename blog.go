@@ -1,31 +1,25 @@
-package blog
+package main
 
 import (
+	"os"
 	"fmt"
 	"time"
+	"log"
 	"net/http"
-
-	"appengine"
-	"appengine/datastore"
+	"google.golang.org/appengine"
+	"google.golang.org/appengine/datastore"
 )
 
 type Blog struct {
-	Title string
-	Body string
-	More string
-	Category string
-	Datetime time.Time
-	Public bool
+	Title      string
+	Body       string
+	More       string
+	Category   string
+	Datetime   time.Time
+	Public     bool
 	IsMarkdown bool
 }
 
-func init() {
-	http.HandleFunc("/", rootHandler)
-}
-
-func entries(c appengine.Context) *datastore.Key {
-	return datastore.NewKey(c, "Blog", "", 0, nil)
-}
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -34,5 +28,17 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	if _, err := q.GetAll(c, &es); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Fprint(w, "Hello, world!")
+	fmt.Fprintf(w, "%v+", es)
+}
+
+func main() {
+	http.HandleFunc("/", rootHandler)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+
+	log.Printf("Listening on port %s", port)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
