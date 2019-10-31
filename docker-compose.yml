@@ -6,9 +6,12 @@ services:
       - GO111MODULE=on
       - DATASTORE_EMULATOR_HOST=datastore:8059
       - DATASTORE_PROJECT_ID=local-app
+      - PORT=8000
     working_dir: /opt/app
     volumes:
       - .:/opt/app
+    ports:
+      - 8000:8000
     links:
       - datastore:datastore
     command: sleep infinity
