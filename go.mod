@@ -4,5 +4,6 @@ go 1.11
 
 require (
 	cloud.google.com/go/datastore v1.0.0
+	github.com/gin-gonic/gin v1.4.0
 	google.golang.org/appengine v1.6.5 // indirect
 )
