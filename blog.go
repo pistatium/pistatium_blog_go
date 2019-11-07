@@ -1,14 +1,14 @@
 package main
 
 import (
+	"cloud.google.com/go/datastore"
 	"context"
-	"os"
 	"fmt"
-	"time"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"cloud.google.com/go/datastore"
-	"github.com/gin-gonic/gin"
+	"os"
+	"time"
 )
 
 const (
@@ -18,13 +18,16 @@ const (
 )
 
 type Entry struct {
-	Title      string     `datastore:"title,noindex`
-	Body       string     `datastore:"body,noindex`
-	More       string     `datastore:"more,noindex`
-	Category   string     `datastore:"category`
-	Datetime   *time.Time `datastore:"datetime`
-	Public     bool       `datastore:"public`
-	IsMarkdown bool       `datastore:"is_markdown,noindex`
+	Id         int64      `datastore:"-"`
+	Title      string     `datastore:"title,noindex"`
+	Body       string     `datastore:"body,noindex"`
+	More       string     `datastore:"more,noindex"`
+	Category   string     `datastore:"category"`
+	Datetime   *time.Time `datastore:"datetime"`
+	Public     bool       `datastore:"public"`
+	IsMarkdown bool       `datastore:"is_markdown,noindex"`
+	//ModifyUser string            `datastore:"modify_user"`
+	//CreateUser *datastore.Entity `datastore:"create_user"`
 }
 
 type Entries struct {
@@ -32,9 +35,9 @@ type Entries struct {
 }
 
 func getDatastoreClient(ctx context.Context) (client *datastore.Client, err error) {
-	projectID := os.Getenv(EnvKeyDatastoreProjectId)  // Set by docker-compose
+	projectID := os.Getenv(EnvKeyDatastoreProjectId) // Set by docker-compose
 	if projectID == "" {
-		projectID = os.Getenv(ProjectId)  // Set by App Engine server
+		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
 	client, err = datastore.NewClient(ctx, projectID)
 	return
@@ -79,11 +82,15 @@ func getEntries(gc *gin.Context) {
 	// 最新10件取得
 	q := datastore.NewQuery("Blog").Order("-datetime").Limit(10)
 	entries := make([]*Entry, 0, 10)
-	if _, err := client.GetAll(ctx, q, &entries); err != nil {
+	keys, err := client.GetAll(ctx, q, &entries)
+	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
+	for i, key := range keys {
+		entries[i].Id = key.ID
+	}
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
 }
 
