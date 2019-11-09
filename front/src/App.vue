@@ -1,60 +1,82 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+    <v-app id="main">
+        <v-navigation-drawer v-model="drawer" app right dark>
+            <v-list dense>
+                <v-list-item link>
+                    <v-list-item-action>
+                        <v-icon>mdi-home</v-icon>
+                    </v-list-item-action>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+                    <v-list-item-content>
+                        <v-list-item-title>Home</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
 
-      <v-spacer></v-spacer>
+                <v-list-item link>
+                    <v-list-item-action>
+                        <v-icon>mdi-contact-mail</v-icon>
+                    </v-list-item-action>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
+                    <v-list-item-content>
+                        <v-list-item-title>Contact</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+        <v-app-bar
+                app
+                color="light-green darken-1"
+                dark
+        >
+            <v-toolbar-title><h1>Pistatium</h1></v-toolbar-title>
+
+            <v-spacer/>
+
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
+        </v-app-bar>
+
+        <v-container grid-list-lg style="margin-top: 64px;">
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-card color="grey lighten-5">
+
+                        <v-card-text>
+                            2019-11-09
+
+                            <p class="display-1 font-weight-black light-green--text text--darken-3">
+                                App Engine + Go + Vue.js + Vuetify でつくる SPA ブログ
+                            </p>
+
+                            <div class="text--primary">
+                                <p>
+                                    ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。
+                                </p>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn
+                                    text
+                                    color="green darken-3 accent-4"
+                            >
+                                &gt;&gt;&gt; 続きを読む
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
-export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
-};
+    export default {
+        name: 'LayoutsDemosBaselineFlipped',
+        props: {
+            source: String,
+        },
+        data: () => ({
+            drawer: false,
+        }),
+    }
 </script>
