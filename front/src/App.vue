@@ -39,30 +39,7 @@
         <v-container grid-list-lg style="margin-top: 64px;">
             <v-layout row wrap>
                 <v-flex xs12>
-                    <v-card color="grey lighten-5">
-
-                        <v-card-text>
-                            2019-11-09
-
-                            <p class="display-1 font-weight-black light-green--text text--darken-3">
-                                App Engine + Go + Vue.js + Vuetify でつくる SPA ブログ
-                            </p>
-
-                            <div class="text--primary">
-                                <p>
-                                    ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。ここに本文が入ります。
-                                </p>
-                            </div>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn
-                                    text
-                                    color="green darken-3 accent-4"
-                            >
-                                &gt;&gt;&gt; 続きを読む
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
+                    <Entry v-for="entry in entries" entry="entry"></Entry>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -70,13 +47,16 @@
 </template>
 
 <script>
+    import Entry from "./components/Entry";
     export default {
         name: 'LayoutsDemosBaselineFlipped',
+        components: {Entry},
         props: {
             source: String,
         },
         data: () => ({
             drawer: false,
+            entries: [],
         }),
     }
 </script>
