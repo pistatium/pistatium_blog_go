@@ -39,7 +39,7 @@
         <v-container grid-list-lg style="margin-top: 64px;">
             <v-layout row wrap>
                 <v-flex xs12>
-                    <Entry v-for="entry in entries" entry="entry"></Entry>
+                    <Entry v-for="entry in entries" entry="entry" v-bind:key="entry.id"></Entry>
                 </v-flex>
             </v-layout>
         </v-container>
