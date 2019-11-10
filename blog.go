@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+
 const (
 	ProjectId                = "GOOGLE_CLOUD_PROJECT"
 	EnvKeyDatastoreProjectId = "DATASTORE_PROJECT_ID"
@@ -98,6 +99,10 @@ func index(gc *gin.Context) {
 	gc.String(http.StatusOK, "try: GET /entries or POST /entries")
 }
 
+func health(gc *gin.Context) {
+	gc.JSON(http.StatusOK, &map[string]string {"status": "ok", })
+}
+
 func main() {
 	port := os.Getenv(EnvKeyPORT)
 	if port == "" {
@@ -106,6 +111,7 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/", index)
+	r.GET("/health", health)
 	r.GET("/entries", getEntries)
 	r.POST("/entries", postEntry)
 
