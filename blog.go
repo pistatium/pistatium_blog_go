@@ -8,9 +8,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
+const EntriesPerPage = 10
 
 const (
 	ProjectId                = "GOOGLE_CLOUD_PROJECT"
@@ -80,8 +82,14 @@ func getEntries(gc *gin.Context) {
 		return
 	}
 
+	page, _ := strconv.Atoi(gc.DefaultQuery("page", "0"))
+	offset := 0
+	if page != 0 {
+		offset = page * EntriesPerPage
+	}
+
 	// 最新10件取得
-	q := datastore.NewQuery("Blog").Order("-datetime").Limit(10)
+	q := datastore.NewQuery("Blog").Order("-datetime").Limit(EntriesPerPage).Offset(offset)
 	entries := make([]*Entry, 0, 10)
 	keys, err := client.GetAll(ctx, q, &entries)
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
@@ -111,9 +119,9 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/", index)
-	r.GET("/health", health)
-	r.GET("/entries", getEntries)
-	r.POST("/entries", postEntry)
+	r.GET("/api/health", health)
+	r.GET("/api/entries", getEntries)
+	r.POST("/api/entries", postEntry)
 
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)

@@ -47,6 +47,7 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import Entry from "./components/Entry";
     export default {
         name: 'LayoutsDemosBaselineFlipped',
@@ -58,5 +59,8 @@
             drawer: false,
             entries: [],
         }),
+        mounted () {
+            axios.get('/api/entries').then(res => (this.entries = res.entries))
+        },
     }
 </script>
