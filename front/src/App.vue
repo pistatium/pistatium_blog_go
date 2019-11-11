@@ -39,10 +39,17 @@
         <v-container grid-list-lg style="margin-top: 64px;">
             <v-layout row wrap>
                 <v-flex xs12>
-                    <Entry v-for="entry in entries" entry="entry" v-bind:key="entry.id"></Entry>
+
+                    <Entry v-for="entry in entries" v-bind:key="entry.id" v-bind:entry=entry></Entry>
                 </v-flex>
             </v-layout>
         </v-container>
+        <div class="text-center">
+            <v-btn class="ma-2" tile color="green" dark href="/">&lt;&lt; Newer</v-btn>
+            <v-btn class="ma-2" tile color="green" dark href="/">^ Top</v-btn>
+            <v-btn class="ma-2" tile color="green" dark href="/">&gt;&gt; Older</v-btn>
+
+        </div>
     </v-app>
 </template>
 
@@ -60,7 +67,10 @@
             entries: [],
         }),
         mounted () {
-            axios.get('/api/entries').then(res => (this.entries = res.entries))
+            axios.get('/api/entries').then(res => {
+                this.entries = res.data.entries;
+                console.log(res);
+            })
         },
     }
 </script>
