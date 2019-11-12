@@ -9,7 +9,7 @@
             </p>
 
             <div class="text--primary">
-                {{ entry.Body }}
+                {{ markdown }}
             </div>
         </v-card-text>
 
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+    import marked from 'marked';
+
     export default {
         name: "Entry",
         props: ["entry"],
@@ -35,6 +37,9 @@
             link: function() {
                 return `/show/${this.entry.Id}`
             },
+            markdown: function () {
+                return marked(this.entry.body)
+            }
         }
     }
 </script>

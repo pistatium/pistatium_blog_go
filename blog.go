@@ -89,7 +89,7 @@ func getEntries(gc *gin.Context) {
 	}
 
 	// 最新10件取得
-	q := datastore.NewQuery("Blog").Order("-datetime").Limit(EntriesPerPage).Offset(offset)
+	q := datastore.NewQuery("Blog").Filter("public =", true).Order("-datetime").Limit(EntriesPerPage).Offset(offset)
 	entries := make([]*Entry, 0, 10)
 	keys, err := client.GetAll(ctx, q, &entries)
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {

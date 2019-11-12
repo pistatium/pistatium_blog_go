@@ -1,29 +1,26 @@
 <template>
-    <div id="app">
-        <router-view></router-view>
-    </div>
+    <v-app id="app">
+        <Navigation></Navigation>
+        <v-container grid-list-lg style="margin-top: 64px;">
+            <router-view></router-view>
+        </v-container>
+    </v-app>
 </template>
 
 <script>
-    //import axios from 'axios';
-    // import Entry from "./components/Entry";
-    // export default {
-    //     name: 'LayoutsDemosBaselineFlipped',
-    //     components: {Entry},
-    //     props: {
-    //         source: String,
-    //     },
-    //     data: () => ({
-    //         drawer: false,
-    //         entries: [],
-    //         page: 0,
-    //     }),
-    //     mounted () {
-    //
-    //         axios.get('/api/entries').then(res => {
-    //             this.entries = res.data.entries;
-    //             console.log(res);
-    //         })
-    //     },
-    // }
+    import Navigation from "./components/Navigation";
+
+    export default {
+        name: 'LayoutsDemosBaselineFlipped',
+        components: {
+            Navigation
+        },
+        props: {
+            source: String,
+        },
+        data: () => ({
+            drawer: false,
+        }),
+        mounted () {},
+    }
 </script>
