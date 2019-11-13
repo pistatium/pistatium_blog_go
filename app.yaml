@@ -4,6 +4,9 @@ handlers:
   - url: /
     static_files: front/dist/index.html
     upload: front/dist/index.html
+  - url: /ads.txt
+    static_files: front/dist/ads.txt
+    upload: front/dist/ads.txt
   - url: /css
     static_dir: front/dist/css
   - url: /js
