@@ -2,7 +2,7 @@
     <div>
         <v-layout row wrap>
             <v-flex xs12>
-                <Entry v-for="entry in entries" v-bind:key="entry.id" v-bind:entry=entry></Entry>
+                <Entry v-for="entry in entries" v-bind:key="entry.id" v-bind:entry=entry v-bind:show_detail="false"></Entry>
             </v-flex>
         </v-layout>
 

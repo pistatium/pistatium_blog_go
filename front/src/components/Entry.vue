@@ -1,26 +1,33 @@
 <template>
     <v-card color="grey lighten-5">
 
-        <v-card-text>
+        <v-card-text class="entry">
+
             {{ entry.Datetime.slice(0, 10) }}
+            <v-btn color="secondary" fab x-small icon :href=link>
+                <v-icon>mdi-file-document-box</v-icon>
+            </v-btn>
 
             <p class="display-1 font-weight-black light-green--text text--darken-3">
                 {{ entry.Title }}
             </p>
 
             <div class="text--primary" v-html="markdown"></div>
+
+            <div class="text--primary" v-html="markdown_more" v-if="show_detail"></div>
+
         </v-card-text>
 
-        <v-card-actions v-if="!entry.More">
+        <v-card-actions v-if="!show_detail && entry.More">
                 <v-btn
-                        text
-                        color="green darken-3 accent-4"
+                        color="accent"
+                        block
                         :href=link
                 >
                     &gt;&gt;&gt; 続きを読む
                 </v-btn>
-
         </v-card-actions>
+
     </v-card>
 
 </template>
@@ -30,13 +37,16 @@
 
     export default {
         name: "Entry",
-        props: ["entry"],
+        props: ["entry", "show_detail"],
         computed: {
             link: function() {
                 return `/show/${this.entry.Id}`
             },
             markdown: function () {
                 return marked(this.entry.Body || "", {breaks: true})
+            },
+            markdown_more: function () {
+                return marked(this.entry.More || "", {breaks: true})
             }
         }
     }
@@ -44,6 +54,13 @@
 
 <style scoped>
     .v-card {
+
         margin: 48px 0;
+        padding: 12px;
     }
+    .entry {
+        font-size: 110%;
+        line-height: 220%;
+    }
+
 </style>
