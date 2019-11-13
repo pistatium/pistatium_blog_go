@@ -8,9 +8,7 @@
                 {{ entry.Title }}
             </p>
 
-            <div class="text--primary">
-                {{ markdown }}
-            </div>
+            <div class="text--primary" v-html="markdown"></div>
         </v-card-text>
 
         <v-card-actions v-if="!entry.More">
@@ -28,7 +26,7 @@
 </template>
 
 <script>
-    import marked from 'marked';
+    const marked = require('marked');
 
     export default {
         name: "Entry",
@@ -38,7 +36,7 @@
                 return `/show/${this.entry.Id}`
             },
             markdown: function () {
-                return marked(this.entry.body)
+                return marked(this.entry.Body || "", {breaks: true})
             }
         }
     }
