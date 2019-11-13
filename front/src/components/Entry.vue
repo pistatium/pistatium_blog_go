@@ -54,7 +54,6 @@
 
 <style scoped>
     .v-card {
-
         margin: 48px 0;
         padding: 12px;
     }

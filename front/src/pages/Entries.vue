@@ -7,10 +7,10 @@
         </v-layout>
 
         <div class="text-center">
-            <v-btn class="ma-2" tile color="green" dark :href="'/?page=' + (page - 1)" v-if="page > 0">&lt;&lt; Newer
+            <v-btn class="ma-2" tile color="green" dark :href="'/' + (page - 1)" v-if="page > 0">&lt;&lt; Newer
             </v-btn>
             <v-btn class="ma-2" tile color="green" dark href="/" v-if="page !== 0">^ Top</v-btn>
-            <v-btn class="ma-2" tile color="green" dark :href="'/?page=' + (page + 1)">&gt;&gt; Older</v-btn>
+            <v-btn class="ma-2" tile color="green" dark :href="'/' + (page + 1)">&gt;&gt; Older</v-btn>
 
         </div>
     </div>
@@ -28,9 +28,8 @@
             page: 0,
         }),
         mounted() {
-            console.log(this.$route.params)
-            this.page = parseInt(this.$route.query.page, 10) || 0
-            axios.get('/api/entries').then(res => {
+            this.page = parseInt(this.$route.params.page, 10) || 0
+            axios.get('/api/entries?page=' + this.page).then(res => {
                 this.entries = res.data.entries;
                 console.log(res);
             })
