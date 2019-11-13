@@ -18,6 +18,7 @@ const (
 	ProjectId                = "GOOGLE_CLOUD_PROJECT"
 	EnvKeyDatastoreProjectId = "DATASTORE_PROJECT_ID"
 	EnvKeyPORT               = "PORT"
+	CacheDuration            = 60
 )
 
 type Entry struct {
@@ -100,6 +101,7 @@ func getEntries(gc *gin.Context) {
 	for i, key := range keys {
 		entries[i].Id = key.ID
 	}
+	gc.Header("Cache-Control", "public, max-age=" + CacheDuration)
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
 }
 
@@ -108,7 +110,7 @@ func index(gc *gin.Context) {
 }
 
 func health(gc *gin.Context) {
-	gc.JSON(http.StatusOK, &map[string]string {"status": "ok", })
+	gc.JSON(http.StatusOK, &map[string]string{"status": "ok",})
 }
 
 func main() {
