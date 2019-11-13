@@ -74,6 +74,29 @@ func postEntry(gc *gin.Context) {
 	gc.JSON(http.StatusOK, entry)
 }
 
+func getEntry(gc *gin.Context) {
+	ctx := context.Background()
+
+	client, err := getDatastoreClient(ctx)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	entryId, err := strconv.Atoi(gc.Param("id"))
+	if err != nil {
+		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	k := datastore.IDKey("Blog", int64(entryId), nil)
+	e := new(Entry)
+	if err := client.Get(ctx, k, e); err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
+	gc.JSON(http.StatusOK, &e)
+}
+
 func getEntries(gc *gin.Context) {
 	ctx := context.Background()
 
@@ -101,7 +124,7 @@ func getEntries(gc *gin.Context) {
 	for i, key := range keys {
 		entries[i].Id = key.ID
 	}
-	gc.Header("Cache-Control", "public, max-age=" + CacheDuration)
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
 }
 
@@ -124,6 +147,7 @@ func main() {
 	r.GET("/api/health", health)
 	r.GET("/api/entries", getEntries)
 	r.POST("/api/entries", postEntry)
+	r.POST("/api/entries/:id", getEntry)
 
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)
