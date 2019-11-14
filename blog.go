@@ -93,6 +93,7 @@ func getEntry(gc *gin.Context) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	e.Id = int64(entryId)
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.JSON(http.StatusOK, &e)
 }
@@ -129,7 +130,7 @@ func getEntries(gc *gin.Context) {
 }
 
 func index(gc *gin.Context) {
-	gc.String(http.StatusOK, "try: GET /entries or POST /entries")
+	gc.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
 func health(gc *gin.Context) {
@@ -143,11 +144,14 @@ func main() {
 	}
 
 	r := gin.Default()
-	r.GET("/", index)
+
+	r.LoadHTMLGlob("front/dist/*.html")
+
 	r.GET("/api/health", health)
 	r.GET("/api/entries", getEntries)
 	r.POST("/api/entries", postEntry)
 	r.GET("/api/entries/:id", getEntry)
+	r.NoRoute(index)
 
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)

@@ -1,9 +1,6 @@
 runtime: go112
 
 handlers:
-  - url: /
-    static_files: front/dist/index.html
-    upload: front/dist/index.html
   - url: /ads.txt
     static_files: front/dist/ads.txt
     upload: front/dist/ads.txt

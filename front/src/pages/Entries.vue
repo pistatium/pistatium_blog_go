@@ -7,10 +7,10 @@
         </v-layout>
 
         <div class="text-center">
-            <v-btn class="ma-2" tile color="green" dark :href="'/' + (page - 1)" v-if="page > 0">&lt;&lt; Newer
+            <v-btn class="ma-2" tile color="green" dark v-bind:to=prev_page v-if="page > 0">&lt;&lt; Newer
             </v-btn>
-            <v-btn class="ma-2" tile color="green" dark href="/" v-if="page !== 0">^ Top</v-btn>
-            <v-btn class="ma-2" tile color="green" dark :href="'/' + (page + 1)">&gt;&gt; Older</v-btn>
+            <v-btn class="ma-2" tile color="green" dark to="/" v-if="page !== 0">^ Top</v-btn>
+            <v-btn class="ma-2" tile color="green" dark v-bind:to=next_page>&gt;&gt; Older</v-btn>
 
         </div>
     </div>
@@ -27,13 +27,33 @@
             entries: [],
             page: 0,
         }),
-        mounted() {
+        mounted () {
             this.page = parseInt(this.$route.params.page, 10) || 0
             axios.get('/api/entries?page=' + this.page).then(res => {
                 this.entries = res.data.entries;
                 console.log(res);
             })
         },
+        watch: {
+            '$route' (to, from) {
+                this.page = parseInt(this.params.page, 10) || 0
+                axios.get('/api/entries?page=' + this.page).then(res => {
+                    this.entries = res.data.entries;
+                    console.log(res);
+                })
+            }
+        },
+        computed: {
+            prev_page: function() {
+                if (this.page === 1) {
+                    return '/'
+                }
+                return `/${this.page - 1}`
+            },
+            next_page: function() {
+                return `/${this.page + 1}`
+            },
+        }
 
     }
 </script>

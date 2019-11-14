@@ -1,19 +1,14 @@
 <template>
     <v-card color="grey lighten-5">
 
-        <v-card-text class="entry" v-if="entry.id">
-            <p class="text-right entry-date">
-                <v-btn color="primary" text small text-right :href=link>
-                    <v-icon>mdi-file-document-box</v-icon>
-                    &nbsp;&nbsp;{{ entry.Datetime.slice(0, 10) }}
-
-                </v-btn>
+        <v-card-text class="entry">
+            <p class="entry-date">
+                &nbsp;&nbsp;{{ date }}
             </p>
 
-
-            <p class="display-1 font-weight-black light-green--text text--darken-3">
+            <router-link tag="h1" v-bind:to=link class="display-1 font-weight-black light-green--text text--darken-3">
                 {{ entry.Title }}
-            </p>
+            </router-link>
 
             <div class="text--primary" v-html="markdown"></div>
 
@@ -31,10 +26,10 @@
                 </v-btn>
         </v-card-actions>
         <div v-else class="text-right">
-            <v-btn class="mx-2" fab dark small color="primary">
+            <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
                 <v-icon dark>mdi-twitter</v-icon>
             </v-btn>
-            <v-btn class="mx-2" fab dark small color="primary">
+            <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
                 <v-icon dark>mdi-alpha-b-box</v-icon>
             </v-btn>
         </div>
@@ -52,12 +47,32 @@
             link: function() {
                 return `/show/${this.entry.Id}`
             },
+            date: function() {
+                if (! this.entry.Datetime) {
+                    return ""
+                }
+                return this.entry.Datetime.slice(0, 10)
+            },
             markdown: function () {
-                return marked(this.entry.Body || "", {breaks: true})
+                return marked(this.entry.Body || "", {breaks: true}, function (err, out) {
+                    if (twttr !== 'undefined') {
+                        twttr.widgets.load();
+                    }
+                    return out
+                })
             },
             markdown_more: function () {
                 return marked(this.entry.More || "", {breaks: true})
+            },
+            tweet_share_link: function () {
+                const url = window.location.href
+                return `https://twitter.com/intent/tweet?url=${url}&text=${this.entry.Title}`
+            },
+            hatena_bookmark_link: function () {
+                const url = window.location.href
+                return `https://b.hatena.ne.jp/entry/${url}`
             }
+
         }
     }
 </script>
@@ -79,5 +94,7 @@
     .entry-date .v-icon {
         padding-right: 6px;
     }
-
+    h1 {
+        cursor: pointer;
+    }
 </style>

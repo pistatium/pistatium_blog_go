@@ -1,5 +1,5 @@
 <template>
-    <entry show_detail=true entry="entry"></entry>
+    <entry show_detail=true v-bind:entry=entry v-if="entry.Id !== 0"></entry>
 </template>
 
 <script>
@@ -18,10 +18,9 @@
                 this.entryId = parseInt(this.$route.params.id, 10) || 0
                 axios.get('/api/entries/' + this.entryId).then(res => {
                     this.entry = res.data;
-                    console.log(res.data);
+                    console.log(this.entry);
                 })
             }
         },
-
     }
 </script>
