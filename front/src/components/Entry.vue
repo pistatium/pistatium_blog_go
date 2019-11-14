@@ -55,8 +55,8 @@
             },
             markdown: function () {
                 return marked(this.entry.Body || "", {breaks: true}, function (err, out) {
-                    if (twttr !== 'undefined') {
-                        twttr.widgets.load();
+                    if (window.twttr !== 'undefined') {
+                        window.twttr.widgets.load();
                     }
                     return out
                 })

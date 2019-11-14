@@ -89,9 +89,13 @@ func getEntry(gc *gin.Context) {
 	}
 	k := datastore.IDKey("Blog", int64(entryId), nil)
 	e := new(Entry)
-	if err := client.Get(ctx, k, e); err != nil {
+	err = client.Get(ctx, k, e)
+	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
+	}
+	if ! e.Public {
+		gc.JSON(http.StatusForbidden, gin.H{"error": "private"})
 	}
 	e.Id = int64(entryId)
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
