@@ -147,7 +147,7 @@ func main() {
 	r.GET("/api/health", health)
 	r.GET("/api/entries", getEntries)
 	r.POST("/api/entries", postEntry)
-	r.POST("/api/entries/:id", getEntry)
+	r.GET("/api/entries/:id", getEntry)
 
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)

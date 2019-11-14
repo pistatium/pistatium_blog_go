@@ -1,12 +1,15 @@
 <template>
     <v-card color="grey lighten-5">
 
-        <v-card-text class="entry">
+        <v-card-text class="entry" v-if="entry.id">
+            <p class="text-right entry-date">
+                <v-btn color="primary" text small text-right :href=link>
+                    <v-icon>mdi-file-document-box</v-icon>
+                    &nbsp;&nbsp;{{ entry.Datetime.slice(0, 10) }}
 
-            {{ entry.Datetime.slice(0, 10) }}
-            <v-btn color="secondary" fab x-small icon :href=link>
-                <v-icon>mdi-file-document-box</v-icon>
-            </v-btn>
+                </v-btn>
+            </p>
+
 
             <p class="display-1 font-weight-black light-green--text text--darken-3">
                 {{ entry.Title }}
@@ -27,7 +30,14 @@
                     &gt;&gt;&gt; 続きを読む
                 </v-btn>
         </v-card-actions>
-
+        <div v-else class="text-right">
+            <v-btn class="mx-2" fab dark small color="primary">
+                <v-icon dark>mdi-twitter</v-icon>
+            </v-btn>
+            <v-btn class="mx-2" fab dark small color="primary">
+                <v-icon dark>mdi-alpha-b-box</v-icon>
+            </v-btn>
+        </div>
     </v-card>
 
 </template>
@@ -60,6 +70,14 @@
     .entry {
         font-size: 110%;
         line-height: 220%;
+    }
+    .entry-date {
+        margin: 0;
+        padding: 0;
+    }
+
+    .entry-date .v-icon {
+        padding-right: 6px;
     }
 
 </style>

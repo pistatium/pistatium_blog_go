@@ -7,16 +7,19 @@
     import Entry from "../components/Entry";
 
     export default {
-        name: 'Entry',
+        name: 'ShowEntry',
         components: {Entry},
-        props: ['entry'],
         data: () => ({
             entry: {},
-            page: 0,
+            entryId: 0,
         }),
         mounted() {
-            if (!entry) {
-                alert('')
+            if (!this.entry.id) {
+                this.entryId = parseInt(this.$route.params.id, 10) || 0
+                axios.get('/api/entries/' + this.entryId).then(res => {
+                    this.entry = res.data;
+                    console.log(res.data);
+                })
             }
         },
 

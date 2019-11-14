@@ -10,7 +10,7 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/show', component: Entry },
+  { path: '/show/:id', component: Entry },
   { path: '/:page', component: Entries },
   { path: '/', component: Entries },
 ]
