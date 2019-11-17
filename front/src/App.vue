@@ -2,6 +2,20 @@
     <v-app id="app">
         <Navigation></Navigation>
         <v-container grid-list-lg>
+            <v-card loading v-if="this.$root.loading">
+                <v-card-text>
+                    Loading...
+                </v-card-text>
+            </v-card>
+
+            <v-alert
+                    dense
+                    outlined
+                    type="error"
+                    v-if="this.$root.error "
+            >
+                {{ this.$root.error }}<br>
+            </v-alert>
             <router-view></router-view>
         </v-container>
     </v-app>
@@ -21,7 +35,8 @@
         data: () => ({
             drawer: false,
         }),
-        mounted () {},
+        mounted() {
+        },
     }
 </script>
 

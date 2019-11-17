@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="navigation">
 <!--        <v-navigation-drawer v-model="drawer" app right dark>-->
 <!--            <v-list dense>-->
 <!--                <v-list-item link>-->
@@ -50,5 +50,8 @@
 <style scoped>
     h1 {
         cursor: pointer;
+    }
+    .navigation {
+        margin-bottom: 32px;
     }
 </style>

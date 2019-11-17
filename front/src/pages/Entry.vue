@@ -14,12 +14,18 @@
             entryId: 0,
         }),
         mounted() {
+            this.entryId = parseInt(this.$route.params.id, 10) || 0
+            if (this.$root.entryHash[this.entryId]) {
+                this.entry = this.$root.entryHash[this.entryId]
+            }
             if (!this.entry.id) {
-                this.entryId = parseInt(this.$route.params.id, 10) || 0
+                this.$root.loading = true;
                 axios.get('/api/entries/' + this.entryId).then(res => {
-                    this.entry = res.data;
-                    console.log(this.entry);
-                })
+                    this.entry = res.data
+                    console.log(this.entry)
+                }).catch(error => {
+                    this.$root.error = error.response.statusText
+                }).finally(() => this.$root.loading = false)
             }
         },
     }

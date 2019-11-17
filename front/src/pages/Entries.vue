@@ -58,14 +58,22 @@
         },
         methods: {
             _fetchEntries () {
+                this.$root.loading = true;
                 this.empty = false
                 this.page = parseInt(this.$route.params.page, 10) || 0
                 axios.get('/api/entries?page=' + this.page).then(res => {
                     this.entries = res.data.entries;
                     if (this.entries.length == 0) {
                         this.empty = true
+                        return
                     }
-                })
+                    // cache
+                    for (var e of res.data.entries) {
+                        $this.route.entryHash[e.Id] = e
+                    }
+                }).catch(error => {
+                    this.$root.error = error.response.statusText
+                }).finally(() => this.$root.loading = false)
             }
         }
 
