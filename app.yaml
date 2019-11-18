@@ -8,6 +8,9 @@ handlers:
     static_dir: front/dist/css
   - url: /js
     static_dir: front/dist/js
+  - url: /img
+    static_dir: front/public/img
+
   - url: /.*
     secure: always
     redirect_http_response_code: 301
