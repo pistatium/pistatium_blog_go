@@ -93,6 +93,10 @@
     .entry-body {
         margin: 24px 0 12px 0;
     }
+    .entry-body img {
+        max-width: 100%;
+        max-height: 300px;
+    }
     .entry-body li {
         margin: 12px;
     }
