@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -34,6 +35,14 @@ type Entry struct {
 	//CreateUser *datastore.Entity `datastore:"create_user"`
 }
 
+type Photo struct {
+	Id int64 `datastore:"-"`
+	Comment string `datastore:"comment"`
+	Datetime *time.Time `datastore:"datetime"`
+	Image []byte `datastore:"image"`
+	Title string `datastore:"title"`
+}
+
 type Entries struct {
 	Entries []*Entry `json:"entries"`
 }
@@ -45,6 +54,33 @@ func getDatastoreClient(ctx context.Context) (client *datastore.Client, err erro
 	}
 	client, err = datastore.NewClient(ctx, projectID)
 	return
+}
+
+func getPhoto(gc *gin.Context) {
+	ctx := context.Background()
+
+	client, err := getDatastoreClient(ctx)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	filename := strings.Replace(gc.Param("filename"), ".jpg", "", 1)
+	photoId, err := strconv.Atoi(filename)
+	if err != nil {
+		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	k := datastore.IDKey("Photo", int64(photoId), nil)
+	e := new(Photo)
+	err = client.Get(ctx, k, e)
+	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
+	gc.Data(http.StatusOK, "image/jpeg", e.Image)
 }
 
 func postEntry(gc *gin.Context) {
@@ -155,6 +191,7 @@ func main() {
 	r.GET("/api/entries", getEntries)
 	r.POST("/api/entries", postEntry)
 	r.GET("/api/entries/:id", getEntry)
+	r.GET("/photo/show/:filename", getPhoto)
 	r.NoRoute(index)
 
 	log.Printf("Listening on port %s", port)
