@@ -170,7 +170,11 @@ func getEntries(gc *gin.Context) {
 }
 
 func index(gc *gin.Context) {
-	gc.HTML(http.StatusOK, "index.html", gin.H{})
+	gc.HTML(http.StatusOK, "index.html", gin.H{
+		"title": "Pistatium Blog",
+		"titleEnc": "Pistatium Blog",
+		"description": "",
+	})
 }
 
 func health(gc *gin.Context) {
@@ -189,7 +193,8 @@ func main() {
 
 	r.GET("/api/health", health)
 	r.GET("/api/entries", getEntries)
-	r.POST("/api/entries", postEntry)
+	// FIXME LOGIN
+	//r.POST("/api/entries", postEntry)
 	r.GET("/api/entries/:id", getEntry)
 	r.GET("/photo/show/:filename", getPhoto)
 	r.NoRoute(index)

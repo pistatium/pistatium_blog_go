@@ -1,5 +1,5 @@
 <template>
-    <v-card color="grey lighten-5">
+    <v-card color="">
 
         <v-card-text class="entry">
             <p class="entry-date">
@@ -10,9 +10,9 @@
                 {{ entry.Title }}
             </router-link>
 
-            <div class="text--primary" v-html="markdown"></div>
-
-            <div class="text--primary" v-html="markdown_more" v-if="show_detail"></div>
+            <div class="text--primary entry-body" v-html="markdown"></div>
+            <v-divider v-if="show_detail"></v-divider>
+            <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
 
         </v-card-text>
 
@@ -54,7 +54,7 @@
                 return this.entry.Datetime.slice(0, 10)
             },
             markdown: function () {
-                return marked(this.entry.Body || "", {breaks: true}, function (err, out) {
+                return marked(this.entry.Body || "", {breaks: true, smartLists: true}, function (err, out) {
                     if (window.twttr !== 'undefined') {
                         window.twttr.widgets.load();
                     }
@@ -62,7 +62,7 @@
                 })
             },
             markdown_more: function () {
-                return marked(this.entry.More || "", {breaks: true})
+                return marked(this.entry.More || "", {breaks: true, smartLists: true})
             },
             tweet_share_link: function () {
                 const url = window.location.href
@@ -83,18 +83,31 @@
         padding: 12px;
     }
     .entry {
-        font-size: 110%;
+        font-size: 108%;
         line-height: 220%;
     }
     .entry-date {
         margin: 0;
         padding: 0;
     }
+    .entry-body {
+        margin: 24px 0 12px 0;
+    }
+    .entry-body li {
+        margin: 12px;
+    }
+    .entry-more {
+
+    }
+
 
     .entry-date .v-icon {
         padding-right: 6px;
     }
     h1 {
         cursor: pointer;
+    }
+    h3 {
+        margin-top: 8px;
     }
 </style>

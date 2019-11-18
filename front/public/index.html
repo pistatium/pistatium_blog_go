@@ -5,11 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>blog</title>
+    <title>{{.title}}</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script data-ad-client="ca-pub-2359565431337443" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{.title}}">
+    <meta property="og:description" content="{{.description}}">
+    <meta property="og:image" content="https://uniqueogp-n45rxjf4ea-an.a.run.app/ogp/{{.titleEnc}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@kimihiro_n">
+    <meta name="twitter:creator" content="@kimihiro_n">
+    <meta name="twitter:image:src" content="https://uniqueogp-n45rxjf4ea-an.a.run.app/ogp/{{.titleEnc}}">
+
   </head>
   <body>
     <noscript>
