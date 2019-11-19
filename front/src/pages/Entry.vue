@@ -22,7 +22,6 @@
                 this.$root.loading = true;
                 axios.get('/api/entries/' + this.entryId).then(res => {
                     this.entry = res.data
-                    console.log(this.entry)
                 }).catch(error => {
                     this.$root.error = error.response.statusText
                 }).finally(() => this.$root.loading = false)

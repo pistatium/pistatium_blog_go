@@ -1,7 +1,7 @@
 <template>
     <v-app id="app">
         <Navigation></Navigation>
-        <v-container grid-list-lg>
+        <v-container grid-list-lg class="main">
             <v-card loading v-if="this.$root.loading">
                 <v-card-text>
                     Loading...
@@ -17,7 +17,11 @@
                 {{ this.$root.error }}<br>
             </v-alert>
             <router-view></router-view>
+            <footer>
+                ©2019 pistatium.
+            </footer>
         </v-container>
+
     </v-app>
 </template>
 
@@ -44,5 +48,14 @@
     .container {
         margin-top: 48px;
         padding: 0px;
+    }
+    .main {
+        max-width: 740px;
+    }
+    footer {
+        margin: 12px;
+        font-size: 14px;
+        text-align: center;
+        font-weight: lighter;
     }
 </style>

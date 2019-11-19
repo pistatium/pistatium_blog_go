@@ -10,14 +10,17 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/show/:id', component: Entry },
-  { path: '/:page', component: Entries },
-  { path: '/', component: Entries },
+    {path: '/show/:id', component: Entry},
+    {path: '/:page', component: Entries},
+    {path: '/', component: Entries},
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  routes
+    mode: 'history',
+    scrollBehavior(to, from, savedPosition) {
+        return {x: 0, y: 0}
+    },
+    routes
 })
 
 new Vue({

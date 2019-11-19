@@ -20,7 +20,7 @@
                 <v-btn
                         color="accent"
                         block
-                        :href=link
+                        :to=link
                 >
                     &gt;&gt;&gt; 続きを読む
                 </v-btn>
@@ -72,14 +72,13 @@
                 const url = window.location.href
                 return `https://b.hatena.ne.jp/entry/${url}`
             }
-
         }
     }
 </script>
 
 <style scoped>
     .v-card {
-        margin: 48px 0;
+        margin: 12px 0 48px;
         padding: 12px;
     }
     .entry {

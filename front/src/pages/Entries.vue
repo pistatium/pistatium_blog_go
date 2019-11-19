@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div class="headline page-header">新着エントリ一覧 <span v-if="page!==0">(page {{page}})</span></div>
         <v-layout row wrap v-if="!empty">
             <v-flex xs12>
                 <Entry v-for="entry in entries" v-bind:key="entry.id" v-bind:entry=entry
@@ -41,7 +42,6 @@
         },
         watch: {
             '$route'(to, from) {
-                console.log(this._fetchEntries())
                 this._fetchEntries()
             }
         },
@@ -63,13 +63,13 @@
                 this.page = parseInt(this.$route.params.page, 10) || 0
                 axios.get('/api/entries?page=' + this.page).then(res => {
                     this.entries = res.data.entries;
-                    if (this.entries.length == 0) {
+                    if (this.entries.length === 0) {
                         this.empty = true
                         return
                     }
                     // cache
                     for (var e of res.data.entries) {
-                        $this.route.entryHash[e.Id] = e
+                        this.$root.entryHash[e.Id] = e
                     }
                 }).catch(error => {
                     this.$root.error = error.response.statusText
@@ -84,5 +84,11 @@
     .v-alert {
         margin: 32px;
         padding: 32px;
+    }
+    .page-header{
+        color: #818181;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 12px;
     }
 </style>
