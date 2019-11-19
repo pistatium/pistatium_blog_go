@@ -23,7 +23,7 @@ const (
 )
 
 type Entry struct {
-	Id         int64      `datastore:"-"`
+	Id         string      `datastore:"-"`
 	Title      string     `datastore:"title,noindex"`
 	Body       string     `datastore:"body,noindex"`
 	More       string     `datastore:"more,noindex"`
@@ -133,7 +133,7 @@ func getEntry(gc *gin.Context) {
 	if ! e.Public {
 		gc.JSON(http.StatusForbidden, gin.H{"error": "private"})
 	}
-	e.Id = int64(entryId)
+	e.Id = strconv.Itoa(entryId)
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.JSON(http.StatusOK, &e)
 }
@@ -163,7 +163,7 @@ func getEntries(gc *gin.Context) {
 	}
 
 	for i, key := range keys {
-		entries[i].Id = key.ID
+		entries[i].Id = strconv.FormatInt(key.ID, 10)
 	}
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
@@ -198,7 +198,6 @@ func main() {
 	r.GET("/api/entries/:id", getEntry)
 	r.GET("/photo/show/:filename", getPhoto)
 	r.NoRoute(index)
-
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)
 	r.Run(entryPoint)

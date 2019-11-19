@@ -14,9 +14,10 @@
             entryId: 0,
         }),
         mounted() {
-            this.entryId = parseInt(this.$route.params.id, 10) || 0
+            this.entryId = this.$route.params.id
             if (this.$root.entryHash[this.entryId]) {
                 this.entry = this.$root.entryHash[this.entryId]
+                return
             }
             if (!this.entry.id) {
                 this.$root.loading = true;
