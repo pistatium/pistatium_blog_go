@@ -79,7 +79,13 @@
                 color="light-green darken-1"
                 dark
         >
-            <v-toolbar-title href="/"><router-link tag="h1" to="/">Pistatium</router-link></v-toolbar-title>
+
+            <v-toolbar-title href="/">
+                <router-link tag="h1" to="/">
+                    <img class="site-icon" src="/img/favicon-32x32.png">
+                    Pistatium blog
+                </router-link>
+            </v-toolbar-title>
 
             <v-spacer/>
 
@@ -100,8 +106,14 @@
 <style scoped>
     h1 {
         cursor: pointer;
+        font-size: 24px;
     }
     .navigation {
-        margin-bottom: 32px;
+        margin-bottom: 16px;
     }
+    .site-icon {
+        float: left;
+        margin-right: 6px;
+    }
+
 </style>

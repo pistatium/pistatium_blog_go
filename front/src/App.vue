@@ -58,4 +58,9 @@
         text-align: center;
         font-weight: lighter;
     }
+    .v-alert {
+        padding: 24px;
+        margin: 24px 0 32px 0;
+    }
 </style>
+

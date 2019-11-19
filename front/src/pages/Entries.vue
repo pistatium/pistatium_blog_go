@@ -14,7 +14,7 @@
             これ以上記事はありません
         </v-alert>
 
-        <div class="text-center">
+        <div class="text-center" v-if="!this.$root.loading && this.$root.error === ''">
             <v-btn class="ma-2" tile color="green" dark v-bind:to=prev_page v-if="page > 0">&lt;&lt; Newer
             </v-btn>
             <v-btn class="ma-2" tile color="green" dark to="/" v-if="page !== 0">^ Top</v-btn>

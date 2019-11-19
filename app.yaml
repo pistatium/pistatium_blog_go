@@ -4,6 +4,9 @@ handlers:
   - url: /ads.txt
     static_files: front/dist/ads.txt
     upload: front/dist/ads.txt
+  - url: /favicon.ico
+    static_files: front/public/favicon.ico
+    upload: front/public/favicon.ico
   - url: /css
     static_dir: front/dist/css
   - url: /js
