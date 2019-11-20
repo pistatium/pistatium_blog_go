@@ -40,6 +40,18 @@
 <script>
     const marked = require('marked');
 
+    const renderer = new marked.Renderer();
+    marked.setOptions({breaks: true, smartLists: true, renderer:renderer});
+    renderer.link = function( href, title, text ) {
+        return `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
+    }
+    renderer.image = function( href, title, text ) {
+        if (href === null) {
+            return text;
+        }
+        return `<img src="${href}" loading="lazy">`;
+    }
+
     export default {
         name: "Entry",
         props: ["entry", "show_detail"],
@@ -54,7 +66,7 @@
                 return this.entry.Datetime.slice(0, 10)
             },
             markdown: function () {
-                return marked(this.entry.Body || "", {breaks: true, smartLists: true}, function (err, out) {
+                return marked(this.entry.Body || "", {}, function (err, out) {
                     if (window.twttr !== 'undefined') {
                         window.twttr.widgets.load();
                     }
@@ -62,7 +74,7 @@
                 })
             },
             markdown_more: function () {
-                return marked(this.entry.More || "", {breaks: true, smartLists: true})
+                return marked(this.entry.More || "")
             },
             tweet_share_link: function () {
                 const url = window.location.href
