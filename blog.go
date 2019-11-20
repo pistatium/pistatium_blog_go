@@ -1,8 +1,6 @@
 package main
 
 import (
-	"cloud.google.com/go/datastore"
-	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -10,7 +8,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const EntriesPerPage = 10
@@ -24,41 +21,22 @@ const (
 
 type Server struct {
 	entries EntryRepo
-}
-
-type Photo struct {
-	Id       int64      `datastore:"-"`
-	Comment  string     `datastore:"comment"`
-	Datetime *time.Time `datastore:"datetime"`
-	Image    []byte     `datastore:"image"`
-	Title    string     `datastore:"title"`
+	photos  PhotoRepo
 }
 
 func (s *Server) getPhoto(gc *gin.Context) {
 	ctx := gc.Request.Context()
 
-	client, err = datastore.NewClient(ctx, )
-	if err != nil {
-		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	filename := strings.Replace(gc.Param("filename"), ".jpg", "", 1)
-	photoId, err := strconv.Atoi(filename)
-	if err != nil {
-		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	photoId := strings.Replace(gc.Param("filename"), ".jpg", "", 1)
 
-	k := datastore.IDKey("Photo", int64(photoId), nil)
-	e := new(Photo)
-	err = client.Get(ctx, k, e)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
+	photo, err := s.photos.GetPhoto(ctx, photoId)
+	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
-	gc.Data(http.StatusOK, "image/jpeg", e.Image)
+	gc.Data(http.StatusOK, "image/jpeg", photo.Image)
 }
 
 func (s *Server) postEntry(gc *gin.Context) {
@@ -137,7 +115,8 @@ func main() {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
 	server := Server{
-		entries: NewDatastoreEntryRepoImpl(projectID)
+		entries: NewDatastoreEntryRepoImpl(projectID),
+		photos:  NewDatastorePhotoRepoImpl(projectID),
 	}
 
 	r := gin.Default()
