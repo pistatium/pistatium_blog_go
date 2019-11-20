@@ -7,14 +7,11 @@
                        v-bind:show_detail="false"></Entry>
             </v-flex>
         </v-layout>
-        <v-alert v-else
-                 outlined
-                 prominent
-                 border="left">
+        <div v-else class="no-entry" border="left">
             これ以上記事はありません
-        </v-alert>
+        </div>
 
-        <div class="text-center" v-if="!this.$root.loading && this.$root.error === ''">
+        <div class="text-center" v-if="!this.$root.loading && !this.$root.error">
             <v-btn class="ma-2" tile color="green" dark v-bind:to=prev_page v-if="page > 0">&lt;&lt; Newer
             </v-btn>
             <v-btn class="ma-2" tile color="green" dark to="/" v-if="page !== 0">^ Top</v-btn>
@@ -89,6 +86,11 @@
         color: #818181;
         font-weight: bold;
         text-align: center;
-        margin-top: 12px;
+        margin-top: 18px;
+    }
+    .no-entry {
+        margin: 72px 0;
+        text-align: center;
+        color: #558b2f;
     }
 </style>

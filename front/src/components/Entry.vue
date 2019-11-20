@@ -92,13 +92,6 @@
     .entry-body {
         margin: 24px 0 12px 0;
     }
-    .entry-body img {
-        max-width: 100%;
-        max-height: 300px;
-    }
-    .entry-body li {
-        margin: 12px;
-    }
     .entry-more {
 
     }
@@ -112,5 +105,20 @@
     }
     h3 {
         margin-top: 8px;
+    }
+</style>
+
+<style>
+    .entry-body a {
+        text-decoration: none;
+        font-weight: bold;
+        color: #558b2f;
+    }
+    .entry-body img {
+        max-width: 100%;
+        clear: both;
+    }
+    .entry-body li {
+        margin: 12px;
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <entry show_detail=true v-bind:entry=entry v-if="entry.Id !== 0"></entry>
+    <entry show_detail=true class="single-entry" v-bind:entry=entry v-if="entry.Id !== 0"></entry>
 </template>
 
 <script>
@@ -30,3 +30,10 @@
         },
     }
 </script>
+
+<style scoped>
+    .single-entry {
+        margin-top: 32px;
+    }
+
+</style>
