@@ -5,7 +5,6 @@ import (
 	"context"
 	"strconv"
 	"time"
-	"os"
 )
 
 type Entry struct {
@@ -47,7 +46,7 @@ func (d DatastoreEntryRepoImpl) getDatastoreClient(ctx context.Context) (client 
 }
 
 func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limit int, publicOnly bool) ([]*Entry, error) {
-	client, err := getDatastoreClient(ctx)
+	client, err := d.getDatastoreClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +71,7 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 }
 
 func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry, error) {
-	client, err := getDatastoreClient(ctx)
+	client, err := d.getDatastoreClient(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -86,12 +85,12 @@ func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		return nil, err
 	}
-	e.Id = strconv.Itoa(id)
+	e.Id = id
 	return e, nil
 }
 
 func (d DatastoreEntryRepoImpl) CreateEntry(ctx context.Context, entry Entry) error {
-	client, err := getDatastoreClient(ctx)
+	client, err := d.getDatastoreClient(ctx)
 	if err != nil {
 		return err
 	}

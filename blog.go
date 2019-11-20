@@ -37,7 +37,7 @@ type Photo struct {
 func (s *Server) getPhoto(gc *gin.Context) {
 	ctx := gc.Request.Context()
 
-	client, err := getDatastoreClient(ctx)
+	client, err = datastore.NewClient(ctx, )
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -62,26 +62,17 @@ func (s *Server) getPhoto(gc *gin.Context) {
 }
 
 func (s *Server) postEntry(gc *gin.Context) {
-	ctx := gc.Request.Context()
 
+	ctx := gc.Request.Context()
 	var entry Entry
 	if err := gc.ShouldBindJSON(&entry); err != nil {
 		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	client, err := getDatastoreClient(ctx)
-	if err != nil {
-		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	err := s.entries.CreateEntry(ctx, entry)
 
-	if entry.Datetime == nil {
-		now := time.Now()
-		entry.Datetime = &now
-	}
-	key := datastore.IncompleteKey("Blog", nil)
-	if _, err := client.Put(ctx, key, &entry); err != nil {
+	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -89,41 +80,25 @@ func (s *Server) postEntry(gc *gin.Context) {
 }
 
 func (s *Server) getEntry(gc *gin.Context) {
+
 	ctx := gc.Request.Context()
 
-	client, err := getDatastoreClient(ctx)
+	entryId := gc.Param("id")
+
+	entry, err := s.entries.GetEntry(ctx, entryId)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	entryId, err := strconv.Atoi(gc.Param("id"))
-	if err != nil {
-		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	k := datastore.IDKey("Blog", int64(entryId), nil)
-	e := new(Entry)
-	err = client.Get(ctx, k, e)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
-		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if ! e.Public {
+	if ! entry.Public {
 		gc.JSON(http.StatusForbidden, gin.H{"error": "private"})
 	}
-	e.Id = strconv.Itoa(entryId)
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
-	gc.JSON(http.StatusOK, &e)
+	gc.JSON(http.StatusOK, &entry)
 }
 
 func (s *Server) getEntries(gc *gin.Context) {
 	ctx := gc.Request.Context()
-
-	client, err := getDatastoreClient(ctx)
-	if err != nil {
-		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
 
 	page, _ := strconv.Atoi(gc.DefaultQuery("page", "0"))
 	offset := 0
@@ -131,17 +106,10 @@ func (s *Server) getEntries(gc *gin.Context) {
 		offset = page * EntriesPerPage
 	}
 
-	// 最新10件取得
-	q := datastore.NewQuery("Blog").Filter("public =", true).Order("-datetime").Limit(EntriesPerPage).Offset(offset)
-	entries := make([]*Entry, 0, 10)
-	keys, err := client.GetAll(ctx, q, &entries)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
+	entries, err := s.entries.GetEntries(ctx, offset, EntriesPerPage, true)
+	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
-	}
-
-	for i, key := range keys {
-		entries[i].Id = strconv.FormatInt(key.ID, 10)
 	}
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
@@ -168,7 +136,9 @@ func main() {
 	if projectID == "" {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
-	server := Server{entries: NewDatastoreEntryRepoImpl(projectID)}
+	server := Server{
+		entries: NewDatastoreEntryRepoImpl(projectID)
+	}
 
 	r := gin.Default()
 
