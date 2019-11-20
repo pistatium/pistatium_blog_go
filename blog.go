@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -22,6 +23,14 @@ const (
 type Server struct {
 	entries EntryRepo
 	photos  PhotoRepo
+}
+
+func Ellipsis(length int, text string) string {
+	r := []rune(text)
+	if len(r) > length {
+		return string(r[0:length]) + "..."
+	}
+	return text
 }
 
 func (s *Server) getPhoto(gc *gin.Context) {
@@ -94,11 +103,30 @@ func (s *Server) getEntries(gc *gin.Context) {
 }
 
 func (s *Server) index(gc *gin.Context) {
-	gc.HTML(http.StatusOK, "index.html", gin.H{
-		"title":       "Pistatium Blog",
-		"titleEnc":    "Pistatium Blog",
-		"description": "",
-	})
+	ctx := gc.Request.Context()
+	path := gc.Request.URL.Path
+	title := ""
+	description := ""
+	switch {
+	case path == "/":
+		title = "トップ"
+	case strings.HasPrefix(path, "/show/"):
+		entryID := strings.Replace(path, "/show/", "", 1)
+		entry, err := s.entries.GetEntry(ctx, entryID)
+		if err == nil {
+			title = entry.Title
+			description = Ellipsis(12, entry.Body)
+		}
+	default:
+		title = "Pistatium Blog (" + path + ")"
+
+	}
+	params := map[string]string{
+		"title":       title,
+		"description": description,
+		"titleEnc":    url.PathEscape(title),
+	}
+	gc.HTML(http.StatusOK, "index.html", params)
 }
 
 func health(gc *gin.Context) {
