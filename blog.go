@@ -22,42 +22,20 @@ const (
 	CacheDuration            = 60
 )
 
-type Entry struct {
-	Id         string      `datastore:"-"`
-	Title      string     `datastore:"title,noindex"`
-	Body       string     `datastore:"body,noindex"`
-	More       string     `datastore:"more,noindex"`
-	Category   string     `datastore:"category"`
-	Datetime   *time.Time `datastore:"datetime"`
-	Public     bool       `datastore:"public"`
-	IsMarkdown bool       `datastore:"is_markdown,noindex"`
-	//ModifyUser string            `datastore:"modify_user"`
-	//CreateUser *datastore.Entity `datastore:"create_user"`
+type Server struct {
+	entries EntryRepo
 }
 
 type Photo struct {
-	Id int64 `datastore:"-"`
-	Comment string `datastore:"comment"`
+	Id       int64      `datastore:"-"`
+	Comment  string     `datastore:"comment"`
 	Datetime *time.Time `datastore:"datetime"`
-	Image []byte `datastore:"image"`
-	Title string `datastore:"title"`
+	Image    []byte     `datastore:"image"`
+	Title    string     `datastore:"title"`
 }
 
-type Entries struct {
-	Entries []*Entry `json:"entries"`
-}
-
-func getDatastoreClient(ctx context.Context) (client *datastore.Client, err error) {
-	projectID := os.Getenv(EnvKeyDatastoreProjectId) // Set by docker-compose
-	if projectID == "" {
-		projectID = os.Getenv(ProjectId) // Set by App Engine server
-	}
-	client, err = datastore.NewClient(ctx, projectID)
-	return
-}
-
-func getPhoto(gc *gin.Context) {
-	ctx := context.Background()
+func (s *Server) getPhoto(gc *gin.Context) {
+	ctx := gc.Request.Context()
 
 	client, err := getDatastoreClient(ctx)
 	if err != nil {
@@ -83,8 +61,8 @@ func getPhoto(gc *gin.Context) {
 	gc.Data(http.StatusOK, "image/jpeg", e.Image)
 }
 
-func postEntry(gc *gin.Context) {
-	ctx := context.Background()
+func (s *Server) postEntry(gc *gin.Context) {
+	ctx := gc.Request.Context()
 
 	var entry Entry
 	if err := gc.ShouldBindJSON(&entry); err != nil {
@@ -110,8 +88,8 @@ func postEntry(gc *gin.Context) {
 	gc.JSON(http.StatusOK, entry)
 }
 
-func getEntry(gc *gin.Context) {
-	ctx := context.Background()
+func (s *Server) getEntry(gc *gin.Context) {
+	ctx := gc.Request.Context()
 
 	client, err := getDatastoreClient(ctx)
 	if err != nil {
@@ -138,8 +116,8 @@ func getEntry(gc *gin.Context) {
 	gc.JSON(http.StatusOK, &e)
 }
 
-func getEntries(gc *gin.Context) {
-	ctx := context.Background()
+func (s *Server) getEntries(gc *gin.Context) {
+	ctx := gc.Request.Context()
 
 	client, err := getDatastoreClient(ctx)
 	if err != nil {
@@ -169,10 +147,10 @@ func getEntries(gc *gin.Context) {
 	gc.JSON(http.StatusOK, &Entries{Entries: entries})
 }
 
-func index(gc *gin.Context) {
+func (s *Server) index(gc *gin.Context) {
 	gc.HTML(http.StatusOK, "index.html", gin.H{
-		"title": "Pistatium Blog",
-		"titleEnc": "Pistatium Blog",
+		"title":       "Pistatium Blog",
+		"titleEnc":    "Pistatium Blog",
 		"description": "",
 	})
 }
@@ -186,18 +164,23 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+	projectID := os.Getenv(EnvKeyDatastoreProjectId) // Set by docker-compose
+	if projectID == "" {
+		projectID = os.Getenv(ProjectId) // Set by App Engine server
+	}
+	server := Server{entries: NewDatastoreEntryRepoImpl(projectID)}
 
 	r := gin.Default()
 
 	r.LoadHTMLGlob("front/dist/*.html")
 
 	r.GET("/api/health", health)
-	r.GET("/api/entries", getEntries)
+	r.GET("/api/entries", server.getEntries)
 	// FIXME LOGIN
-	//r.POST("/api/entries", postEntry)
-	r.GET("/api/entries/:id", getEntry)
-	r.GET("/photo/show/:filename", getPhoto)
-	r.NoRoute(index)
+	//r.POST("/api/entries", server.postEntry)
+	r.GET("/api/entries/:id", server.getEntry)
+	r.GET("/photo/show/:filename", server.getPhoto)
+	r.NoRoute(server.index)
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)
 	r.Run(entryPoint)
