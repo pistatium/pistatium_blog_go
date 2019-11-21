@@ -109,7 +109,7 @@ func (s *Server) index(gc *gin.Context) {
 	description := ""
 	switch {
 	case path == "/":
-		title = "トップ"
+		title = "Top"
 	case strings.HasPrefix(path, "/show/"):
 		entryID := strings.Replace(path, "/show/", "", 1)
 		entry, err := s.entries.GetEntry(ctx, entryID)

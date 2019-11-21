@@ -22,7 +22,7 @@
                         block
                         :to=link
                 >
-                    &gt;&gt;&gt; 続きを読む
+                    &gt; 続きを読む
                 </v-btn>
         </v-card-actions>
         <div v-else class="text-right">
@@ -41,7 +41,16 @@
     const marked = require('marked');
 
     const renderer = new marked.Renderer();
-    marked.setOptions({breaks: true, smartLists: true, renderer:renderer});
+    marked.setOptions({
+        breaks: true,
+        smartLists: true,
+        renderer:renderer,
+        highlight: function(code, lang, callback) {
+            require('pygmentize-bundled') ({ lang: lang, format: 'html' }, code, function (err, result) {
+                callback(err, result.toString());
+            });
+        }
+    });
     renderer.link = function( href, title, text ) {
         return `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
     }
@@ -55,6 +64,11 @@
     export default {
         name: "Entry",
         props: ["entry", "show_detail"],
+        watch: {
+            entry: function (val) {
+                document.title = this.entry.Title
+            },
+        },
         computed: {
             link: function() {
                 return `/show/${this.entry.Id}`
