@@ -39,16 +39,15 @@
 
 <script>
     const marked = require('marked');
+    const highlightjs = require('highlight.js')
 
     const renderer = new marked.Renderer();
     marked.setOptions({
         breaks: true,
         smartLists: true,
         renderer:renderer,
-        highlight: function(code, lang, callback) {
-            require('pygmentize-bundled') ({ lang: lang, format: 'html' }, code, function (err, result) {
-                callback(err, result.toString());
-            });
+        highlight: function(code, lang) {
+            return highlightjs.highlightAuto(code).value;
         }
     });
     renderer.link = function( href, title, text ) {
@@ -132,19 +131,41 @@
     h3 {
         margin-top: 8px;
     }
+
 </style>
 
 <style>
-    .entry-body a {
+    .v-application .entry-body h2 {
+        border-left: 6px #558b2f solid;
+        padding-left: 6px;
+        margin-top: 24px;
+    }
+    .v-application .entry-body a {
         text-decoration: none;
         font-weight: bold;
-        color: #558b2f;
+        color: #569033;
     }
-    .entry-body img {
+    .v-application .entry-body img {
         max-width: 100%;
         clear: both;
     }
-    .entry-body li {
+    .v-application .entry-body li {
         margin: 12px;
     }
+    .v-application .entry-body pre code {
+        width: 100%;
+        margin: 5px 0;
+        padding: 5px;
+        background: rgb(31, 32, 34);
+        line-height: 120%;
+        color: #ffffff;
+    }
+    .v-application .entry-body code {
+        padding: 3px;
+        margin: 0 3px;
+        background: rgb(31, 32, 34);
+        line-height: 120%;
+        color: #a5c261;
+    }
+
 </style>
