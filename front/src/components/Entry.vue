@@ -136,9 +136,9 @@
 
 <style>
     .v-application .entry-body h2 {
-        border-left: 6px #558b2f solid;
-        padding-left: 6px;
-        margin-top: 24px;
+        border-left: 8px #558b2f solid;
+        padding-left: 12px;
+        margin: 32px 0 12px 0;
     }
     .v-application .entry-body a {
         text-decoration: none;
@@ -149,8 +149,11 @@
         max-width: 100%;
         clear: both;
     }
+    .v-application .entry-body ul {
+        margin: 0 0 12px 0;
+    }
     .v-application .entry-body li {
-        margin: 12px;
+        margin: 0 12px;
     }
     .v-application .entry-body pre code {
         width: 100%;

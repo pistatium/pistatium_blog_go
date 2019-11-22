@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"log"
 	"net/http"
 	"net/url"
@@ -129,6 +130,26 @@ func (s *Server) index(gc *gin.Context) {
 	gc.HTML(http.StatusOK, "index.html", params)
 }
 
+func (s *Server) sitemap(gc *gin.Context) {
+	ctx := gc.Request.Context()
+	sm := stm.NewSitemap(1)
+	sm.SetDefaultHost("https://kimihiro-n.appspot.com")
+
+	sm.Create()
+
+	entries, err := s.entries.GetEntries(ctx, 0, 1000, true)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	sm.Add(stm.URL{{"loc", "/"}, {"changefreq", "daily"}})
+	for _, entry := range entries {
+		sm.Add(stm.URL{{"loc", "/show/" + entry.Id}, {"changefreq", "daily"}})
+	}
+
+	gc.Data(http.StatusOK, "text/xml", sm.XMLContent())
+}
+
 func health(gc *gin.Context) {
 	gc.JSON(http.StatusOK, &map[string]string{"status": "ok",})
 }
@@ -152,6 +173,7 @@ func main() {
 	r.LoadHTMLGlob("front/dist/*.html")
 
 	r.GET("/api/health", health)
+	r.GET("/sitemap.xml", server.sitemap)
 	r.GET("/api/entries", server.getEntries)
 	// FIXME LOGIN
 	//r.POST("/api/entries", server.postEntry)
