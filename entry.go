@@ -55,10 +55,10 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 	q := datastore.NewQuery("Blog").
 		Filter("public =", true).
 		Order("-datetime").
-		Limit(EntriesPerPage).
+		Limit(limit).
 		Offset(offset)
 
-	entries := make([]*Entry, 0, 10)
+	entries := make([]*Entry, 0, limit)
 	keys, err := client.GetAll(ctx, q, &entries)
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		return nil, err
