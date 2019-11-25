@@ -17,6 +17,12 @@
                 {{ this.$root.error }}<br>
             </v-alert>
             <router-view></router-view>
+
+            <Adsense
+                    data-ad-client="ca-pub-2359565431337443"
+                    data-ad-slot="9814535793">
+            </Adsense>
+
             <footer>
                 ©2019 pistatium.
             </footer>
