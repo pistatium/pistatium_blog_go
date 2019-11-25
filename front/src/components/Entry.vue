@@ -12,6 +12,12 @@
 
             <div class="text--primary entry-body" v-html="markdown"></div>
             <v-divider v-if="show_detail"></v-divider>
+
+            <InArticleAdsense
+                    data-ad-client="ca-pub-2359565431337443"
+                    data-ad-slot="5140793616">
+            </InArticleAdsense>
+
             <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
 
         </v-card-text>
@@ -33,7 +39,13 @@
                 <v-icon dark>mdi-alpha-b-box</v-icon>
             </v-btn>
         </div>
+        <InArticleAdsense
+                data-ad-client="ca-pub-2359565431337443"
+                data-ad-slot="5140793616">
+        </InArticleAdsense>
+
     </v-card>
+
 
 </template>
 

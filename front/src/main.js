@@ -5,6 +5,14 @@ import Entries from "./pages/Entries";
 import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router'
 
+import Adsense from 'vue-google-adsense/dist/Adsense.min.js'
+import InArticleAdsense from 'vue-google-adsense/dist/InArticleAdsense.min.js'
+
+Vue.use(require('vue-script2'))
+
+Vue.use(Adsense)
+Vue.use(InArticleAdsense)
+
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
