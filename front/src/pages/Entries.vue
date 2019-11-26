@@ -3,9 +3,11 @@
         <div class="headline page-header">新着エントリ一覧 <span v-if="page!==0">(page {{page}})</span></div>
         <v-layout row wrap v-if="!empty">
             <v-flex xs12>
-                <Entry v-for="entry in entries" v-bind:key="entry.id" v-bind:entry=entry
+                <Entry v-for="(entry, index) in entries" v-bind:key="entry.id" v-bind:entry=entry v-bind:index="index"
                        v-bind:show_detail="false"></Entry>
             </v-flex>
+
+
         </v-layout>
         <div v-else class="no-entry" border="left">
             これ以上記事はありません

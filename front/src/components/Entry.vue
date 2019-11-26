@@ -1,28 +1,30 @@
 <template>
-    <v-card color="">
+    <div>
+        <v-card color="">
 
-        <v-card-text class="entry">
-            <p class="entry-date">
-                &nbsp;&nbsp;{{ date }}
-            </p>
+            <v-card-text class="entry">
+                <p class="entry-date">
+                    &nbsp;&nbsp;{{ date }}
+                </p>
 
-            <router-link tag="h1" v-bind:to=link class="display-1 font-weight-black light-green--text text--darken-3">
-                {{ entry.Title }}
-            </router-link>
+                <router-link tag="h1" v-bind:to=link class="display-1 font-weight-black light-green--text text--darken-3">
+                    {{ entry.Title }}
+                </router-link>
 
-            <div class="text--primary entry-body" v-html="markdown"></div>
-            <v-divider v-if="show_detail"></v-divider>
+                <div class="text--primary entry-body" v-html="markdown"></div>
+                <v-divider v-if="show_detail"></v-divider>
 
-            <InArticleAdsense
-                    data-ad-client="ca-pub-2359565431337443"
-                    data-ad-slot="5140793616">
-            </InArticleAdsense>
+                <InArticleAdsense
+                        v-if="show_detail"
+                        data-ad-client="ca-pub-2359565431337443"
+                        data-ad-slot="5140793616">
+                </InArticleAdsense>
 
-            <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
+                <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
 
-        </v-card-text>
+            </v-card-text>
 
-        <v-card-actions v-if="!show_detail && entry.More">
+            <v-card-actions v-if="!show_detail && entry.More">
                 <v-btn
                         color="accent"
                         block
@@ -30,21 +32,24 @@
                 >
                     &gt; 続きを読む
                 </v-btn>
-        </v-card-actions>
-        <div v-else class="text-right">
-            <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
-                <v-icon dark>mdi-twitter</v-icon>
-            </v-btn>
-            <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
-                <v-icon dark>mdi-alpha-b-box</v-icon>
-            </v-btn>
-        </div>
-        <InArticleAdsense
-                data-ad-client="ca-pub-2359565431337443"
-                data-ad-slot="5140793616">
-        </InArticleAdsense>
+            </v-card-actions>
+            <div v-else class="text-right">
+                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
+                    <v-icon dark>mdi-twitter</v-icon>
+                </v-btn>
+                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
+                    <v-icon dark>mdi-alpha-b-box</v-icon>
+                </v-btn>
+            </div>
+        </v-card>
 
-    </v-card>
+        <Adsense
+                v-if="index % 3 === 1"
+                data-ad-client="ca-pub-2359565431337443"
+                data-ad-slot="9814535793">
+        </Adsense>
+    </div>
+
 
 
 </template>
@@ -74,7 +79,7 @@
 
     export default {
         name: "Entry",
-        props: ["entry", "show_detail"],
+        props: ["entry", "show_detail", "index"],
         watch: {
             entry: function (val) {
                 document.title = this.entry.Title
