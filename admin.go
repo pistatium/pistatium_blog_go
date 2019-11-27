@@ -1,9 +1,8 @@
 package main
 
 import (
-	"golang.org/x/crypto/bcrypt"
-	"cloud.google.com/go/datastore"
 	"context"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type LoginError struct {
@@ -26,29 +25,24 @@ type AdminUserRepo interface {
 
 // ======================================================================
 
-type DatastoreAdminUserRepoImpl struct {
+
+type AdminUserRepoImpl struct {
 	projectID string
 }
 
-func NewDatastoreAdminUserRepoImpl(projectID string) AdminUserRepo {
-	return &DatastoreAdminUserRepoImpl{projectID: projectID}
+func NewAdminUserRepoImpl() AdminUserRepo {
+	return &AdminUserRepoImpl{}
 }
 
-func (d DatastoreAdminUserRepoImpl) GetValidUser(ctx context.Context, username string, password string) (*AdminUser, error) {
-	client, err := datastore.NewClient(ctx, d.projectID)
+func (d AdminUserRepoImpl) GetValidUser(ctx context.Context, username string, password string) (*AdminUser, error) {
+	if username != "kimihiro-n" {
+		return nil, &LoginError{"Invalid user/password"}
+	}
+	hash := "$2y$12$IXFmmeezqymra5O00L95lejHgVvMf9n7vDsKrU7f3s3zJTd5aePNS"
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	if err != nil {
-		return nil, err
+		return nil, &LoginError{"Invalid user/password"}
 	}
-	k := datastore.NameKey("AdminUser", username, nil)
-	u := new(AdminUser)
-	err = client.Get(ctx, k, u)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
-		return nil, err
-	}
-
-	err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
-	if err != nil {
-		return nil, &LoginError{err.Error()}
-	}
+	u := &AdminUser{Username: username, Password:hash}
 	return u, nil
 }

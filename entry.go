@@ -58,7 +58,6 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 		Limit(limit).
 		Offset(offset)
 
-	entries := make([]*Entry, 0, limit)
 	keys, err := client.GetAll(ctx, q, &entries)
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		return nil, err
