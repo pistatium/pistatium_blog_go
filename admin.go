@@ -46,3 +46,4 @@ func (d AdminUserRepoImpl) GetValidUser(ctx context.Context, username string, pa
 	u := &AdminUser{Username: username, Password:hash}
 	return u, nil
 }
+

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"golang.org/x/net/context"
 	"log"
 	"net/http"
 	"net/url"
@@ -24,6 +25,8 @@ const (
 type Server struct {
 	entries EntryRepo
 	photos  PhotoRepo
+	admin   AdminUserRepo
+	conf    *Conf
 }
 
 func Ellipsis(length int, text string) string {
@@ -155,6 +158,7 @@ func health(gc *gin.Context) {
 }
 
 func main() {
+	ctx := context.Background()
 	port := os.Getenv(EnvKeyPORT)
 	if port == "" {
 		port = "8080"
@@ -163,9 +167,16 @@ func main() {
 	if projectID == "" {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
+	confRepo := NewDatastoreConfRepoImpl(projectID)
+	conf, err := confRepo.GetConf(ctx)
+	if err != nil {
+		panic(err)
+	}
 	server := Server{
 		entries: NewDatastoreEntryRepoImpl(projectID),
 		photos:  NewDatastorePhotoRepoImpl(projectID),
+		admin: NewAdminUserRepoImpl(),
+		conf: conf,
 	}
 
 	r := gin.Default()
@@ -182,5 +193,6 @@ func main() {
 	r.NoRoute(server.index)
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)
+
 	r.Run(entryPoint)
 }
