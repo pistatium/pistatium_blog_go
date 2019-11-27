@@ -30,6 +30,8 @@ services:
     environment:
       - PROJECT_ID=local-app
     command: /bin/bash -c "gcloud beta emulators datastore start --host-port 0.0.0.0:8059 --project $$PROJECT_ID --data-dir /data"
+    ports:
+      - 8059:8059
     volumes:
       - datastore_volume:/data
 volumes:
