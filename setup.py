@@ -4,13 +4,26 @@ from google.cloud import datastore
 
 def create_conf():
     # gcloud auth application-default login
-    client = datastore.Client()
+    client = datastore.Client(project='local-app')
+
+    query = client.query(kind='Blog')
+    query_iterator = query.fetch(limit=10)
+    for q in query_iterator:
+        print(q)
 
     key = client.key("Conf", 1)
     c = datastore.Entity(key)
     c['secret'] = 'P5Xau2@v6U8mv4wiT6Y9Evj%R8aumgR8'
     client.put(c)
-    print("Created conf")
+    print("Created conf", from_datastore(c))
+
+
+def from_datastore(entity):
+
+    if not entity:
+        return None
+    entity['id'] = entity.key.id
+    return entity
 
 
 def create_user():

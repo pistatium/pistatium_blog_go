@@ -35,6 +35,7 @@ func (d DatastoreConfRepoImpl) GetConf(ctx context.Context) (*Conf, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	k := datastore.IDKey("Conf", 1, nil)
 	e := new(Conf)
 	err = client.Get(ctx, k, e)

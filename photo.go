@@ -29,12 +29,10 @@ func NewDatastorePhotoRepoImpl(projectID string) PhotoRepo {
 	return &DatastorePhotoRepoImpl{projectID: projectID}
 }
 
-
 func (d DatastorePhotoRepoImpl) getDatastoreClient(ctx context.Context) (client *datastore.Client, err error) {
 	client, err = datastore.NewClient(ctx, d.projectID)
 	return
 }
-
 
 func (d DatastorePhotoRepoImpl) GetPhoto(ctx context.Context, id string) (*Photo, error) {
 	client, err := d.getDatastoreClient(ctx)
@@ -54,4 +52,3 @@ func (d DatastorePhotoRepoImpl) GetPhoto(ctx context.Context, id string) (*Photo
 	e.Id = int64(iid)
 	return e, nil
 }
-
