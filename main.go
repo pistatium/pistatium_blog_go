@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/sessions"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"golang.org/x/net/context"
 	"log"
@@ -153,9 +155,38 @@ func (s *Server) sitemap(gc *gin.Context) {
 	gc.Data(http.StatusOK, "text/xml", sm.XMLContent())
 }
 
+
+type LoginForm struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+func (s *Server) adminLogin(gc *gin.Context) {
+	ctx := gc.Request.Context()
+	var user LoginForm
+	if err := gc.ShouldBindJSON(&user); err != nil {
+		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	u, err := s.admin.GetValidUser(ctx, user.Username, user.Password)
+	if err != nil {
+		if  err == err.(*LoginError) {
+			gc.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
+			return
+		} else {
+			gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+	}
+	SetLogin(gc, u.Username)
+	gc.JSON(http.StatusOK, &map[string]string{"status": "logged in",})
+}
+
+
 func health(gc *gin.Context) {
 	gc.JSON(http.StatusOK, &map[string]string{"status": "ok",})
 }
+
 
 func main() {
 	ctx := context.Background()
@@ -168,6 +199,7 @@ func main() {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
 	confRepo := NewDatastoreConfRepoImpl(projectID)
+
 	conf, err := confRepo.GetConf(ctx)
 	if err != nil {
 		panic(err)
@@ -181,6 +213,9 @@ func main() {
 
 	r := gin.Default()
 
+	store := cookie.NewStore([]byte(server.conf.Secret))
+	r.Use(sessions.Sessions("SESSION", store))
+
 	r.LoadHTMLGlob("front/dist/*.html")
 
 	r.GET("/api/health", health)
@@ -190,6 +225,7 @@ func main() {
 	//r.POST("/api/entries", server.postEntry)
 	r.GET("/api/entries/:id", server.getEntry)
 	r.GET("/photo/show/:filename", server.getPhoto)
+	r.POST("/admin/login", server.adminLogin)
 	r.NoRoute(server.index)
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)

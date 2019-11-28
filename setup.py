@@ -10,8 +10,7 @@ def create_conf():
     c = datastore.Entity(key)
     c['secret'] = 'P5Xau2@v6U8mv4wiT6Y9Evj%R8aumgR8'
     client.put(c)
-    print("Created conf)
-
+    print("Created conf")
 
 
 def create_user():

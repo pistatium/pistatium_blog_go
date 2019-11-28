@@ -57,7 +57,7 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 		Order("-datetime").
 		Limit(limit).
 		Offset(offset)
-
+	entries := make([]*Entry, limit)
 	keys, err := client.GetAll(ctx, q, &entries)
 	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 		return nil, err

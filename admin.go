@@ -14,7 +14,7 @@ func (e *LoginError) Error() string {
 }
 
 type AdminUser struct {
-	Username string `datastore:-`
+	Username string `datastore:"-"`
 	Password string `datastore:"password"`
 }
 
