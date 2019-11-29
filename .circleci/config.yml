@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-packages-{{ checksum "front/yarn.lock" }}
+          working_directory: front
+      - run:
+          command: yarn install --frozen-lockfile
+          working_directory: front
+      - run:
+          command: yarn build
+          working_directory: front
+      - save_cache:
+          key: yarn-packages-{{ checksum "front/yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+          working_directory: front
+      - persist_to_workspace:
+          root: front/dist
+          paths:
+            - ./*
+  deploy:
+    working_directory: ~/pistatium/my_site
+    parallelism: 1
+    shell: /bin/bash --login
+    docker:
+      - image: google/cloud-sdk:latest
+    steps:
+      - checkout
+      - attach_workspace:
+          at: front/dist
+      - run: echo $GOOGLE_API_KEY > key.json
+      - run: ./google-cloud-sdk/bin/gcloud auth activate-service-account $ACCOUNT --key-file key.json
+      - run: rm key.json
+      - run: ./google-cloud-sdk/bin/gcloud --quiet --project kimihiro-n app deploy --version deploy
+
+workflows:
+  version: 2
+  ga-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
