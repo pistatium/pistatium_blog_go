@@ -35,9 +35,9 @@ jobs:
       - attach_workspace:
           at: front/dist
       - run: echo $GOOGLE_API_KEY > key.json
-      - run: ./google-cloud-sdk/bin/gcloud auth activate-service-account $ACCOUNT --key-file key.json
+      - run: gcloud auth activate-service-account $ACCOUNT --key-file key.json
       - run: rm key.json
-      - run: ./google-cloud-sdk/bin/gcloud --quiet --project kimihiro-n app deploy --version deploy
+      - run: gcloud --quiet --project kimihiro-n app deploy --version deploy
 
 workflows:
   version: 2
