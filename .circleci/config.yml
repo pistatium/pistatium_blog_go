@@ -37,7 +37,7 @@ jobs:
       - run: echo $GOOGLE_API_KEY > key.json
       - run: gcloud auth activate-service-account $ACCOUNT --key-file key.json
       - run: rm key.json
-      - run: gcloud --quiet --project kimihiro-n app deploy --version deploy
+      - run: gcloud --quiet --no-promote --project kimihiro-n app deploy
 
 workflows:
   version: 2
