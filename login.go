@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 const SessionUserIdKey = "user_id"
@@ -13,8 +12,7 @@ func loginRequired() gin.HandlerFunc {
 		session := sessions.Default(c)
 		userId := session.Get(SessionUserIdKey)
 		if userId == nil {
-			c.Redirect(http.StatusMovedPermanently, "/login")
-			c.Abort()
+			c.AbortWithStatus(403)
 		} else {
 			c.Set(SessionUserIdKey, userId)
 			c.Next()

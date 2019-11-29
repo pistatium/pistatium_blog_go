@@ -221,11 +221,18 @@ func main() {
 	r.GET("/api/health", health)
 	r.GET("/sitemap.xml", server.sitemap)
 	r.GET("/api/entries", server.getEntries)
-	// FIXME LOGIN
-	//r.POST("/api/entries", server.postEntry)
+
 	r.GET("/api/entries/:id", server.getEntry)
 	r.GET("/photo/show/:filename", server.getPhoto)
+
+	adm := r.Group("/admin")
+	adm.Use(loginRequired())
+	{
+		adm.POST("/api/entries", server.postEntry)
+	}
+
 	r.POST("/admin/login", server.adminLogin)
+
 	r.NoRoute(server.index)
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)
