@@ -1,4 +1,4 @@
-package main
+package repos
 
 import (
 	"cloud.google.com/go/datastore"

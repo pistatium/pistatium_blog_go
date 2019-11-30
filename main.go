@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/sessions"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"github.com/pistatium/pistatium_blog_go/repos"
 	"golang.org/x/net/context"
 	"log"
 	"net/http"
@@ -25,10 +26,10 @@ const (
 )
 
 type Server struct {
-	entries EntryRepo
-	photos  PhotoRepo
-	admin   AdminUserRepo
-	conf    *Conf
+	entries repos.EntryRepo
+	photos  repos.PhotoRepo
+	admin   repos.AdminUserRepo
+	conf    *repos.Conf
 }
 
 func Ellipsis(length int, text string) string {
@@ -57,7 +58,7 @@ func (s *Server) getPhoto(gc *gin.Context) {
 func (s *Server) postEntry(gc *gin.Context) {
 
 	ctx := gc.Request.Context()
-	var entry Entry
+	var entry repos.Entry
 	if err := gc.ShouldBindJSON(&entry); err != nil {
 		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -105,7 +106,7 @@ func (s *Server) getEntries(gc *gin.Context) {
 		return
 	}
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
-	gc.JSON(http.StatusOK, &Entries{Entries: entries})
+	gc.JSON(http.StatusOK, &repos.Entries{Entries: entries})
 }
 
 func (s *Server) index(gc *gin.Context) {
@@ -170,7 +171,7 @@ func (s *Server) adminLogin(gc *gin.Context) {
 	}
 	u, err := s.admin.GetValidUser(ctx, user.Username, user.Password)
 	if err != nil {
-		if  err == err.(*LoginError) {
+		if  err == err.(*repos.LoginError) {
 			gc.JSON(http.StatusForbidden, gin.H{"error": err.Error()})
 			return
 		} else {
@@ -198,17 +199,17 @@ func main() {
 	if projectID == "" {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
 	}
-	confRepo := NewDatastoreConfRepoImpl(projectID)
+	confRepo := repos.NewDatastoreConfRepoImpl(projectID)
 
 	conf, err := confRepo.GetConf(ctx)
 	if err != nil {
 		panic(err)
 	}
 	server := Server{
-		entries: NewDatastoreEntryRepoImpl(projectID),
-		photos:  NewDatastorePhotoRepoImpl(projectID),
-		admin: NewAdminUserRepoImpl(),
-		conf: conf,
+		entries: repos.NewDatastoreEntryRepoImpl(projectID),
+		photos:  repos.NewDatastorePhotoRepoImpl(projectID),
+		admin:   repos.NewAdminUserRepoImpl(),
+		conf:    conf,
 	}
 
 	r := gin.Default()
