@@ -40,5 +40,6 @@ new Vue({
     data: {
         loading: false,
         entryHash: {},
+        isLogin: false,
     },
 }).$mount('#app')
