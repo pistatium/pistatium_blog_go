@@ -16,6 +16,7 @@
             >
                 {{ this.$root.error }}<br>
             </v-alert>
+
             <router-view></router-view>
 
             <Adsense

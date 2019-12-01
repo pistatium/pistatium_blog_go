@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Entry from "./pages/Entry";
-import Entries from "./pages/Entries";
+import Entry from "./pages/Entry"
+import Entries from "./pages/Entries"
+import Admin from "./pages/Admin"
 import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router'
 
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
+    {path: '/admin/', component: Admin},
     {path: '/show/:id', component: Entry},
     {path: '/:page', component: Entries},
     {path: '/', component: Entries},
