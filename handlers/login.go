@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"github.com/gin-contrib/sessions"
@@ -7,7 +7,7 @@ import (
 
 const SessionUserIdKey = "user_id"
 
-func loginRequired() gin.HandlerFunc {
+func LoginRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
 		userId := session.Get(SessionUserIdKey)
