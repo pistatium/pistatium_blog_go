@@ -57,7 +57,9 @@ func main() {
 	adm := r.Group("/admin")
 	adm.Use(handlers.LoginRequired())
 	{
-		adm.POST("/api/entries", server.PostEntry)
+		adm.GET("/admin/is_login", server.IsLogin)
+		adm.GET("/admin/entries", server.GetAdminEntries)
+		adm.POST("/admin/entries", server.PostEntry)
 	}
 	r.POST("/admin/login", server.AdminLogin)
 

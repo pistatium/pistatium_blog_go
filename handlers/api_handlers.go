@@ -13,25 +13,6 @@ const (
 	EntriesPerPage = 10
 )
 
-
-func (s *Server) PostEntry(gc *gin.Context) {
-
-	ctx := gc.Request.Context()
-	var entry repos.Entry
-	if err := gc.ShouldBindJSON(&entry); err != nil {
-		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	err := s.Entries.CreateEntry(ctx, entry)
-
-	if err != nil {
-		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	gc.JSON(http.StatusOK, entry)
-}
-
 func (s *Server) GetEntry(gc *gin.Context) {
 
 	ctx := gc.Request.Context()
