@@ -1,5 +1,12 @@
 <template>
-    <div>
+    <v-lazy
+            v-model="isActive"
+            :options="{
+          threshold: .5
+        }"
+            min-height="200"
+            transition="fade-transition"
+    >
         <v-card color="">
 
             <v-card-text class="entry">
@@ -7,7 +14,8 @@
                     &nbsp;&nbsp;{{ date }}
                 </p>
 
-                <router-link tag="h1" v-bind:to=link class="display-1 font-weight-black light-green--text text--darken-3">
+                <router-link tag="h1" v-bind:to=link
+                             class="display-1 font-weight-black light-green--text text--darken-3">
                     {{ entry.Title }}
                 </router-link>
 
@@ -48,10 +56,7 @@
                 data-ad-client="ca-pub-2359565431337443"
                 data-ad-slot="9814535793">
         </Adsense>
-    </div>
-
-
-
+    </v-lazy>
 </template>
 
 <script>
@@ -62,15 +67,15 @@
     marked.setOptions({
         breaks: true,
         smartLists: true,
-        renderer:renderer,
-        highlight: function(code, lang) {
+        renderer: renderer,
+        highlight: function (code, lang) {
             return highlightjs.highlightAuto(code).value;
         }
     });
-    renderer.link = function( href, title, text ) {
+    renderer.link = function (href, title, text) {
         return `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
     }
-    renderer.image = function( href, title, text ) {
+    renderer.image = function (href, title, text) {
         if (href === null) {
             return text;
         }
@@ -85,12 +90,15 @@
                 document.title = this.entry.Title
             },
         },
+        data: () => ({
+            isActive: false
+        }),
         computed: {
-            link: function() {
+            link: function () {
                 return `/show/${this.entry.Id}`
             },
-            date: function() {
-                if (! this.entry.Datetime) {
+            date: function () {
+                if (!this.entry.Datetime) {
                     return ""
                 }
                 return this.entry.Datetime.slice(0, 10)
@@ -123,17 +131,21 @@
         margin: 12px 0 48px;
         padding: 12px;
     }
+
     .entry {
         font-size: 108%;
         line-height: 220%;
     }
+
     .entry-date {
         margin: 0;
         padding: 0;
     }
+
     .entry-body {
         margin: 24px 0 12px 0;
     }
+
     .entry-more {
 
     }
@@ -142,9 +154,11 @@
     .entry-date .v-icon {
         padding-right: 6px;
     }
+
     h1 {
         cursor: pointer;
     }
+
     h3 {
         margin-top: 8px;
     }
@@ -157,21 +171,26 @@
         padding-left: 12px;
         margin: 32px 0 12px 0;
     }
+
     .v-application .entry-body a {
         text-decoration: none;
         font-weight: bold;
         color: #569033;
     }
+
     .v-application .entry-body img {
         max-width: 100%;
         clear: both;
     }
+
     .v-application .entry-body ul {
         margin: 0 0 12px 0;
     }
+
     .v-application .entry-body li {
         margin: 0 12px;
     }
+
     .v-application .entry-body pre code {
         width: 100%;
         margin: 5px 0;
@@ -180,6 +199,7 @@
         line-height: 120%;
         color: #ffffff;
     }
+
     .v-application .entry-body code {
         padding: 3px;
         margin: 0 3px;
