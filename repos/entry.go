@@ -3,6 +3,7 @@ package repos
 import (
 	"cloud.google.com/go/datastore"
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -14,6 +15,7 @@ type Entry struct {
 	More       string     `datastore:"more,noindex"`
 	Category   string     `datastore:"category"`
 	Datetime   *time.Time `datastore:"datetime"`
+	Updated    *time.Time `datestore:"datetime"`
 	Public     bool       `datastore:"public"`
 	IsMarkdown bool       `datastore:"is_markdown,noindex"`
 	//ModifyUser string            `datastore:"modify_user"`
@@ -27,7 +29,8 @@ type Entries struct {
 type EntryRepo interface {
 	GetEntries(ctx context.Context, offset int, limit int, publicOnly bool) ([]*Entry, error)
 	GetEntry(ctx context.Context, id string) (*Entry, error)
-	CreateEntry(ctx context.Context, entry Entry) error
+	// CreateEntry(ctx context.Context, entry Entry) error
+	UpdateEntry(ctx context.Context, id string, entry Entry) error
 }
 
 // ======================================================================
@@ -88,18 +91,39 @@ func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry
 	return e, nil
 }
 
-func (d DatastoreEntryRepoImpl) CreateEntry(ctx context.Context, entry Entry) error {
+//func (d DatastoreEntryRepoImpl) CreateEntry(ctx context.Context, entry Entry) error {
+//	client, err := d.getDatastoreClient(ctx)
+//	if err != nil {
+//		return err
+//	}
+//
+//	if entry.Datetime == nil {
+//		now := time.Now()
+//		entry.Datetime = &now
+//	}
+//
+//	id := fmt.Sprintf("%d", time.Now().UnixNano() / 1000000)
+//	key := datastore.NameKey("Blog", id, nil)
+//	if _, err := client.Put(ctx, key, &entry); err != nil {
+//		return err
+//	}
+//	return nil
+//}
+
+func (d DatastoreEntryRepoImpl) UpdateEntry(ctx context.Context, id string, entry Entry) error {
 	client, err := d.getDatastoreClient(ctx)
 	if err != nil {
 		return err
 	}
 
+	now := time.Now()
 	if entry.Datetime == nil {
-		now := time.Now()
 		entry.Datetime = &now
 	}
+	entry.Updated = &now
 
-	key := datastore.IncompleteKey("Blog", nil)
+	key := datastore.IDKey("Blog", id, nil)
+	fmt.Println(key, entry)
 	if _, err := client.Put(ctx, key, &entry); err != nil {
 		return err
 	}

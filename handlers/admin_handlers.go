@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pistatium/pistatium_blog_go/repos"
 	"net/http"
@@ -12,16 +13,18 @@ type LoginForm struct {
 	Password string `json:"password"`
 }
 
+const AdminEntriesPerPage = 30
+
 func (s *Server) GetAdminEntries(gc *gin.Context) {
 	ctx := gc.Request.Context()
 
 	page, _ := strconv.Atoi(gc.DefaultQuery("page", "0"))
 	offset := 0
 	if page != 0 {
-		offset = page * EntriesPerPage
+		offset = page * AdminEntriesPerPage
 	}
 
-	entries, err := s.Entries.GetEntries(ctx, offset, EntriesPerPage, false)
+	entries, err := s.Entries.GetEntries(ctx, offset, AdminEntriesPerPage, false)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -37,9 +40,8 @@ func (s *Server) PostEntry(gc *gin.Context) {
 		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	err := s.Entries.CreateEntry(ctx, entry)
-
+	fmt.Println("id", entry.Id)
+	err := s.Entries.UpdateEntry(ctx, entry.Id, entry)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
