@@ -54,14 +54,14 @@ func main() {
 	r.GET("/api/entries/:id", server.GetEntry)
 	r.GET("/photo/show/:filename", server.GetPhoto)
 
-	adm := r.Group("/admin")
+	adm := r.Group("/admin/api")
 	adm.Use(handlers.LoginRequired())
 	{
-		adm.GET("/admin/is_login", server.IsLogin)
-		adm.GET("/admin/entries", server.GetAdminEntries)
-		adm.POST("/admin/entries", server.PostEntry)
+		adm.GET("/is_login", server.IsLogin)
+		adm.GET("/entries", server.GetAdminEntries)
+		adm.POST("/entries", server.PostEntry)
 	}
-	r.POST("/admin/login", server.AdminLogin)
+	r.POST("/admin/api/login", server.AdminLogin)
 
 	r.GET("/sitemap.xml", server.Sitemap)
 	r.NoRoute(server.Index)

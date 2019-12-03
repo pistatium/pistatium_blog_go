@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-list-item v-for="entry in entries" v-bind:key="entry.Id">
+        <v-list-item v-for="entry in entries" v-bind:key="entry.Id" v-on:click="edit(entry)">
             <v-list-item-content>{{ entry.Title }}</v-list-item-content>
         </v-list-item>
     </v-card>
@@ -14,17 +14,18 @@
         data: () => ({
             entries: [],
         }),
-        mounted () {
-            console.log("test")
+        mounted() {
             this.loadEntries()
         },
         methods: {
             loadEntries() {
-                axios.get("/api/entries", {}).then(res => {
+                axios.get("/admin/api/entries", {}).then(res => {
                     this.entries = res.data.entries
-                    console.log(res.data)
                 })
-            }
+            },
+            edit(entry) {
+                this.$parent.editing = entry
+            },
         }
     }
 </script>

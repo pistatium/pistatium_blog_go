@@ -41,7 +41,7 @@
         },
         methods: {
             login() {
-                axios.post("/admin/login", {
+                axios.post("/admin/api/login", {
                     username: this.username,
                     password: this.password
                 }).then(res => {
