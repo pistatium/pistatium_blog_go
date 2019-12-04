@@ -5,57 +5,59 @@
           threshold: .5
         }"
             min-height="200"
-            transition="fade-transition"
     >
-        <v-card color="">
+        <div>
+            <v-card color="">
 
-            <v-card-text class="entry">
-                <p class="entry-date">
-                    &nbsp;&nbsp;{{ date }}
-                </p>
+                <v-card-text class="entry">
+                    <p class="entry-date">
+                        &nbsp;&nbsp;{{ date }}
+                    </p>
 
-                <router-link tag="h1" v-bind:to=link
-                             class="display-1 font-weight-black light-green--text text--darken-3">
-                    {{ entry.Title }}
-                </router-link>
+                    <router-link tag="h1" v-bind:to=link
+                                 class="display-1 font-weight-black light-green--text text--darken-3">
+                        {{ entry.Title }}
+                    </router-link>
 
-                <div class="text--primary entry-body" v-html="markdown"></div>
-                <v-divider v-if="show_detail"></v-divider>
+                    <div class="text--primary entry-body" v-html="markdown"></div>
 
-                <InArticleAdsense
-                        v-if="show_detail"
-                        data-ad-client="ca-pub-2359565431337443"
-                        data-ad-slot="5140793616">
-                </InArticleAdsense>
+                    <InArticleAdsense
+                            class="ads-in-article"
+                            v-if="show_detail"
+                            data-ad-client="ca-pub-2359565431337443"
+                            data-ad-slot="5140793616">
+                    </InArticleAdsense>
 
-                <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
+                    <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
 
-            </v-card-text>
+                </v-card-text>
 
-            <v-card-actions v-if="!show_detail && entry.More">
-                <v-btn
-                        color="accent"
-                        block
-                        :to=link
-                >
-                    &gt; 続きを読む
-                </v-btn>
-            </v-card-actions>
-            <div v-else class="text-right">
-                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
-                    <v-icon dark>mdi-twitter</v-icon>
-                </v-btn>
-                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
-                    <v-icon dark>mdi-alpha-b-box</v-icon>
-                </v-btn>
-            </div>
-        </v-card>
+                <v-card-actions v-if="!show_detail && entry.More">
+                    <v-btn
+                            color="accent"
+                            block
+                            :to=link
+                    >
+                        &gt; 続きを読む
+                    </v-btn>
+                </v-card-actions>
+                <div v-else class="text-right">
+                    <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
+                        <v-icon dark>mdi-twitter</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
+                        <v-icon dark>mdi-alpha-b-box</v-icon>
+                    </v-btn>
+                </div>
+            </v-card>
 
-        <Adsense
-                v-if="index % 3 === 1"
-                data-ad-client="ca-pub-2359565431337443"
-                data-ad-slot="9814535793">
-        </Adsense>
+            <Adsense
+                    class="ads-outer"
+                    v-if="index % 3 === 1"
+                    data-ad-client="ca-pub-2359565431337443"
+                    data-ad-slot="9814535793">
+            </Adsense>
+        </div>
     </v-lazy>
 </template>
 
@@ -89,6 +91,11 @@
             entry: function (val) {
                 document.title = this.entry.Title
             },
+            isActive: function (val) {
+                if (window.twttr !== 'undefined') {
+                    window.twttr.widgets.load();
+                }
+            }
         },
         data: () => ({
             isActive: false
@@ -104,12 +111,7 @@
                 return this.entry.Datetime.slice(0, 10)
             },
             markdown: function () {
-                return marked(this.entry.Body || "", {}, function (err, out) {
-                    if (window.twttr !== 'undefined') {
-                        window.twttr.widgets.load();
-                    }
-                    return out
-                })
+                return marked(this.entry.Body || "")
             },
             markdown_more: function () {
                 return marked(this.entry.More || "")
@@ -155,6 +157,12 @@
         padding-right: 6px;
     }
 
+    .ads-in-article {
+        margin: 10px 0;
+    }
+    .ads-outer {
+        margin-bottom: 40px;
+    }
     h1 {
         cursor: pointer;
     }
