@@ -23,7 +23,7 @@
 
                     <InArticleAdsense
                             class="ads-in-article"
-                            v-if="show_detail"
+                            v-if="show_detail && entry.More"
                             data-ad-client="ca-pub-2359565431337443"
                             data-ad-slot="5140793616">
                     </InArticleAdsense>
@@ -36,18 +36,40 @@
                     <v-btn
                             color="accent"
                             block
+                            large
+                            raised
                             :to=link
                     >
                         &gt; 続きを読む
                     </v-btn>
                 </v-card-actions>
-                <div v-else class="text-right">
-                    <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
-                        <v-icon dark>mdi-twitter</v-icon>
-                    </v-btn>
-                    <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
-                        <v-icon dark>mdi-alpha-b-box</v-icon>
-                    </v-btn>
+
+                <div v-if="show_detail">
+                    <v-divider></v-divider>
+                    <v-card-actions dark>
+                        <v-list-item class="grow">
+                            <v-list-item-avatar color="grey darken-3">
+                                <v-img
+                                        src="/img/kimihiro_n.jpg"
+                                ></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                                <v-list-item-subtitle>Author</v-list-item-subtitle>
+                                <v-list-item-title>@kimihiro-n</v-list-item-title>
+                            </v-list-item-content>
+                            <v-row
+                                    align="center"
+                                    justify="end"
+                            >
+                                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
+                                    <v-icon dark>mdi-twitter</v-icon>
+                                </v-btn>
+                                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
+                                    <v-icon dark>mdi-alpha-b-box</v-icon>
+                                </v-btn>
+                            </v-row>
+                        </v-list-item>
+                    </v-card-actions>
                 </div>
             </v-card>
 

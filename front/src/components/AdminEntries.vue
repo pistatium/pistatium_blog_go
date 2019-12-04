@@ -16,9 +16,15 @@
 
     export default {
         name: "AdminEntries",
+        props: ['ts'],
         data: () => ({
             entries: [],
         }),
+        watch: {
+            ts: function (val) {
+                this.loadEntries()
+            }
+        },
         mounted() {
             this.loadEntries()
         },

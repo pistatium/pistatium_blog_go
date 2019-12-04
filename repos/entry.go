@@ -75,6 +75,7 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 	return entries, nil
 }
 
+
 func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry, error) {
 	client, err := d.getDatastoreClient(ctx)
 	if err != nil {
@@ -128,6 +129,8 @@ func (d DatastoreEntryRepoImpl) UpdateEntry(ctx context.Context, id string, entr
 		entry.Datetime = &now
 	}
 	entry.Updated = &now
+
+	entry.IsMarkdown = true
 
 	key := datastore.IDKey("Blog", int64(iid), nil)
 	fmt.Println(key, entry)

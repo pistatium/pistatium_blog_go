@@ -2,7 +2,6 @@
     <div class="navigation">
         <v-navigation-drawer v-model="drawer" app right dark class="light-green darken-3">
             <v-list dense>
-
                 <v-list-item link to="/">
                     <v-list-item-action>
                         <v-icon>mdi-home</v-icon>
@@ -82,8 +81,8 @@
 
             <v-toolbar-title href="/">
                 <router-link tag="h1" to="/">
-                    <img class="site-icon" src="/img/favicon-32x32.png">
-                    Pistatium blog
+                    <span v-if="! this.$root.isLogin">Pistatium blog</span>
+                    <span v-if="this.$root.isLogin">Note</span>
                 </router-link>
             </v-toolbar-title>
 
