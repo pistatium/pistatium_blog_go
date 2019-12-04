@@ -55,9 +55,12 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 	}
 
 	// 最新10件取得
-	q := datastore.NewQuery("Blog").
-		Filter("public =", true).
-		Order("-datetime").
+	q := datastore.NewQuery("Blog")
+
+	if publicOnly {
+		q = q.Filter("public =", true)
+	}
+	q = q.Order("-datetime").
 		Limit(limit).
 		Offset(offset)
 	entries := make([]*Entry, 0, limit)
@@ -115,14 +118,18 @@ func (d DatastoreEntryRepoImpl) UpdateEntry(ctx context.Context, id string, entr
 	if err != nil {
 		return err
 	}
-
+	iid, err := strconv.Atoi(id)
+	if err != nil {
+		return err
+	}
 	now := time.Now()
+
 	if entry.Datetime == nil {
 		entry.Datetime = &now
 	}
 	entry.Updated = &now
 
-	key := datastore.IDKey("Blog", id, nil)
+	key := datastore.IDKey("Blog", int64(iid), nil)
 	fmt.Println(key, entry)
 	if _, err := client.Put(ctx, key, &entry); err != nil {
 		return err
