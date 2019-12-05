@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 func Ellipsis(length int, text string) string {
@@ -57,7 +58,15 @@ func (s *Server) Sitemap(gc *gin.Context) {
 	}
 	sm.Add(stm.URL{{"loc", "/"}, {"changefreq", "daily"}})
 	for _, entry := range entries {
-		sm.Add(stm.URL{{"loc", "/show/" + entry.Id}, {"changefreq", "daily"}})
+		lastMod := entry.Datetime
+		if entry.Updated != nil {
+			lastMod = entry.Updated
+		}
+		sm.Add(stm.URL{
+			{"loc", "/show/" + entry.Id},
+			{"changefreq", "daily"},
+			{"lastmod", lastMod.Format(time.RFC3339)},
+		})
 	}
 
 	gc.Data(http.StatusOK, "text/xml", sm.XMLContent())
