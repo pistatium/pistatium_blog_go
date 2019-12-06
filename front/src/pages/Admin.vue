@@ -16,7 +16,6 @@
                     <v-dialog
                             v-model="dialog"
                             width="800"
-
                             scrollable
                     >
                         <template v-slot:activator="{ on }">
@@ -61,7 +60,7 @@
                                 required
                                 filled
                                 rows="30"
-                                v-on:keydown="input_tab"
+
                         ></v-textarea>
                         <v-textarea
                                 id="edit_more"
@@ -70,7 +69,7 @@
                                 required
                                 filled
                                 rows="30"
-                                v-on:keydown="input_tab"
+
                         ></v-textarea>
                         <v-switch v-model="editing.Public" label="Public"></v-switch>
                         <v-btn
@@ -128,16 +127,18 @@
                     alert(err)
                 })
             },
-            input_tab(e) {
-                if (e.key === "Tab") {
-                    e.preventDefault();
-                    var elem = e.target;
-                    var val = elem.value;
-                    var pos = elem.selectionStart;
-                    elem.value = val.substr(0, pos) + '\t' + val.substr(pos, val.length);
-                    elem.setSelectionRange(pos + 1, pos + 1);
-                }
-            }
+            // IMEが暴発するのでPEND
+            // input_tab(e) {
+            //
+            //     if (e.key === "Tab") {
+            //         e.preventDefault();
+            //         var elem = e.target;
+            //         var val = elem.value;
+            //         var pos = elem.selectionStart;
+            //         elem.value = val.substr(0, pos) + '\t' + val.substr(pos, val.length);
+            //         elem.setSelectionRange(pos + 1, pos + 1);
+            //     }
+            // }
         }
     }
 </script>

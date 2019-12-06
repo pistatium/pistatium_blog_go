@@ -61,6 +61,7 @@
                                     align="center"
                                     justify="end"
                             >
+                                <span class="share-label">Share: </span>
                                 <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
                                     <v-icon dark>mdi-twitter</v-icon>
                                 </v-btn>
@@ -75,7 +76,7 @@
 
             <Adsense
                     class="ads-outer"
-                    v-if="index % 3 === 1"
+                    v-if="index % 3 === 1 || show_detail"
                     data-ad-client="ca-pub-2359565431337443"
                     data-ad-slot="9814535793">
             </Adsense>
@@ -110,7 +111,7 @@
         name: "Entry",
         props: ["entry", "show_detail", "index"],
         mounted () {
-            if (window.twttr !== 'undefined') {
+            if (window.twttr && window.twttr.widgets) {
                 window.twttr.widgets.load();
             }
         },
@@ -119,7 +120,7 @@
                 document.title = this.entry.Title
             },
             isActive: function (val) {
-                if (window.twttr !== 'undefined') {
+                if (window.twttr && window.twttr.widgets) {
                     window.twttr.widgets.load();
                 }
             }
@@ -184,8 +185,17 @@
         padding-right: 6px;
     }
 
+    .share-label {
+        color: #7aaa42;
+        padding-right: 6px;
+        font-size: 120%;
+        font-weight: bold;
+        vertical-align: center;
+    }
     .ads-in-article {
-        margin: 10px 0;
+        padding: 12px 0;
+        margin: 24px -28px;
+        background: #f4f4f4;
     }
     .ads-outer {
         margin-bottom: 40px;
@@ -236,6 +246,8 @@
     }
 
     .v-application .entry-body code {
+        font-size: 90%;
+        font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
         padding: 3px;
         margin: 0 3px;
         background: rgb(31, 32, 34);
