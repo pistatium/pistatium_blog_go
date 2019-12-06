@@ -62,10 +62,12 @@
                                     justify="end"
                             >
                                 <span class="share-label">Share: </span>
-                                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link target="_blank">
+                                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
+                                       target="_blank">
                                     <v-icon dark>mdi-twitter</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link target="_blank">
+                                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link
+                                       target="_blank">
                                     <v-icon dark>mdi-alpha-b-box</v-icon>
                                 </v-btn>
                             </v-row>
@@ -110,7 +112,7 @@
     export default {
         name: "Entry",
         props: ["entry", "show_detail", "index"],
-        mounted () {
+        mounted() {
             if (window.twttr && window.twttr.widgets) {
                 window.twttr.widgets.load();
             }
@@ -192,14 +194,17 @@
         font-weight: bold;
         vertical-align: center;
     }
+
     .ads-in-article {
         padding: 12px 0;
         margin: 24px -28px;
         background: #f4f4f4;
     }
+
     .ads-outer {
         margin-bottom: 40px;
     }
+
     h1 {
         cursor: pointer;
     }

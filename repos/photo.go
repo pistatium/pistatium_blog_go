@@ -11,12 +11,13 @@ type Photo struct {
 	Id       int64      `datastore:"-"`
 	Comment  string     `datastore:"comment"`
 	Datetime *time.Time `datastore:"datetime"`
-	Image    []byte     `datastore:"image"`
+	Image    []byte     `datastore:"image,noindex"`
 	Title    string     `datastore:"title"`
 }
 
 type PhotoRepo interface {
 	GetPhoto(ctx context.Context, id string) (*Photo, error)
+	PutPhoto(ctx context.Context, photo *Photo) error
 }
 
 // ======================================================================
@@ -51,4 +52,18 @@ func (d DatastorePhotoRepoImpl) GetPhoto(ctx context.Context, id string) (*Photo
 	}
 	e.Id = int64(iid)
 	return e, nil
+}
+
+func (d DatastorePhotoRepoImpl) PutPhoto(ctx context.Context, photo *Photo) error {
+	client, err := d.getDatastoreClient(ctx)
+	if err != nil {
+		return err
+	}
+	ts := time.Now().UnixNano()
+	k := datastore.IDKey("Photo", ts, nil)
+	if _, err := client.Put(ctx, k, photo); err != nil {
+		return err
+	}
+	photo.Id = k.ID
+	return nil
 }

@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pistatium/pistatium_blog_go/repos"
+	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type LoginForm struct {
@@ -47,6 +49,31 @@ func (s *Server) PostEntry(gc *gin.Context) {
 		return
 	}
 	gc.JSON(http.StatusOK, entry)
+}
+
+func (s *Server) UploadPhoto(gc *gin.Context) {
+	ctx := gc.Request.Context()
+
+	file, header , err := gc.Request.FormFile("file")
+	filename := header.Filename
+	bs, err := ioutil.ReadAll(file)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	now := time.Now()
+	img := repos.Photo{
+		Datetime: &now,
+		Image:    bs,
+		Title:    filename,
+	}
+	err = s.Photos.PutPhoto(ctx, &img)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	gc.JSON(http.StatusOK, &map[string]string{"status": "uploaded", "id": strconv.Itoa(int(img.Id))})
 }
 
 func (s *Server) IsLogin(gc *gin.Context) {

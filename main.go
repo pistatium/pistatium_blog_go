@@ -60,6 +60,7 @@ func main() {
 		adm.GET("/is_login", server.IsLogin)
 		adm.GET("/entries", server.GetAdminEntries)
 		adm.POST("/entries", server.PostEntry)
+		adm.POST("/photos", server.UploadPhoto)
 	}
 	r.POST("/admin/api/login", server.AdminLogin)
 
