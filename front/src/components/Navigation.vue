@@ -14,7 +14,7 @@
                 <v-divider></v-divider>
                 <v-subheader>Links</v-subheader>
 
-                <v-list-item link href="https://twitter.com/kimihiro-n" target="_blank" rel="noopener">
+                <v-list-item link href="https://twitter.com/kimihiro_n" target="_blank" rel="noopener">
                     <v-list-item-action>
                         <v-icon>mdi-twitter</v-icon>
                     </v-list-item-action>
