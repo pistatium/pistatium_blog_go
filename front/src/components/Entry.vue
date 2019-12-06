@@ -109,6 +109,11 @@
     export default {
         name: "Entry",
         props: ["entry", "show_detail", "index"],
+        mounted () {
+            if (window.twttr !== 'undefined') {
+                window.twttr.widgets.load();
+            }
+        },
         watch: {
             entry: function (val) {
                 document.title = this.entry.Title
