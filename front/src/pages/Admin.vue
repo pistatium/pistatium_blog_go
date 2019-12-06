@@ -55,18 +55,22 @@
                         >
                         </v-text-field>
                         <v-textarea
+                                id="edit_body"
                                 v-model="editing.Body"
                                 label="Body"
                                 required
                                 filled
                                 rows="30"
+                                v-on:keydown="input_tab"
                         ></v-textarea>
                         <v-textarea
+                                id="edit_more"
                                 v-model="editing.More"
                                 label="More"
                                 required
                                 filled
                                 rows="30"
+                                v-on:keydown="input_tab"
                         ></v-textarea>
                         <v-switch v-model="editing.Public" label="Public"></v-switch>
                         <v-btn
@@ -102,19 +106,37 @@
             axios.get('/admin/api/is_login').then(() => {
                 this.$root.isLogin = true
             })
+            this.timer = setInterval(this.send,10000)
+        },
+        complete: function() {
+            clearInterval(this.timer)
         },
         data: () => ({
             editing: null,
             dialog: false,
-            ts: ''
+            ts: '',
+            timer: null,
         }),
         methods: {
             send() {
+                if (! this.editing || ! this.editing.Id) {
+                    return
+                }
                 axios.post('/admin/api/entries', this.editing).then((res) => {
                     this.ts = new Date().getTime()
                 }).catch((err) => {
                     alert(err)
                 })
+            },
+            input_tab(e) {
+                if (e.key === "Tab") {
+                    e.preventDefault();
+                    var elem = e.target;
+                    var val = elem.value;
+                    var pos = elem.selectionStart;
+                    elem.value = val.substr(0, pos) + '\t' + val.substr(pos, val.length);
+                    elem.setSelectionRange(pos + 1, pos + 1);
+                }
             }
         }
     }
