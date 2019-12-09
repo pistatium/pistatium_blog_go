@@ -67,7 +67,7 @@
                         return
                     }
                     // cache
-                    for (var e of res.data.entries) {
+                    for (let e of res.data.entries) {
                         this.$root.entryHash[e.Id] = e
                     }
                 }).catch(error => {
