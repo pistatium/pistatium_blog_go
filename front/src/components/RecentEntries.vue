@@ -3,7 +3,7 @@
         <v-list two-line>
             <v-list-item-group>
                 <v-subheader>最近のエントリ</v-subheader>
-                <v-list-item v-for="entry in entries" v-bind:key="entry.Id" link :to="link(entry)">
+                <v-list-item v-for="entry in entries" v-bind:key="entry.Id" link :to="link(entry)" v-show="entry.Id !== entryId">
                     <v-list-item-content>
                         <v-list-item-title>{{ entry.Title }}</v-list-item-title>
                         <v-list-item-subtitle>{{ date(entry) }}</v-list-item-subtitle>
@@ -19,16 +19,17 @@
 
     export default {
         name: "RecentEntries",
-        props: ["isActive"],
+        props: ["entryId"],
         data: () => ({
             entries: [],
         }),
         watch: {
-            isActive: function (val) {
+            entryId: function (val) {
                 this.loadEntries()
             },
         },
         mounted() {
+            this.loadEntries()
         },
         methods: {
             loadEntries() {

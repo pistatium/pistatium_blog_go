@@ -3,6 +3,7 @@
         <entry show_detail=true class="single-entry" v-bind:entry=entry v-if="entry.Id !== 0"></entry>
 
         <Adsense
+                v-if="entry.Body"
                 class="ads-outer"
                 data-ad-client="ca-pub-2359565431337443"
                 data-ad-slot="9814535793">
@@ -10,13 +11,13 @@
 
         <v-lazy
                 v-model="isActive"
-                v-if="entry.Id !== 0"
+                v-if="entry.Body"
                 :options="{
                     threshold: .5
                 }"
                 min-height="400"
         >
-            <RecentEntries v-bind:isActive="isActive"></RecentEntries>
+            <RecentEntries v-bind:entryId="entry.Id"></RecentEntries>
         </v-lazy>
     </div>
 
