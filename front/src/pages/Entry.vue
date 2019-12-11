@@ -68,5 +68,7 @@
     .single-entry {
         margin-top: 32px;
     }
-
+    .ads-outer {
+        margin: 10px 0;
+    }
 </style>

@@ -20,6 +20,7 @@
             <router-view></router-view>
 
             <Adsense
+                    class="ads-outer"
                     data-ad-client="ca-pub-2359565431337443"
                     data-ad-slot="9814535793">
             </Adsense>
@@ -68,6 +69,10 @@
     .v-alert {
         padding: 24px;
         margin: 24px 0 32px 0;
+    }
+
+    .ads-outer {
+        margin: 10px 0;
     }
 </style>
 
