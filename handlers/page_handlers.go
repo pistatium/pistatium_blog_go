@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
+	"html/template"
 	"net/http"
 	"net/url"
 	"strings"
@@ -22,9 +24,21 @@ func (s *Server) Index(gc *gin.Context) {
 	path := gc.Request.URL.Path
 	title := ""
 	description := ""
+	entryJSON := ""
+	entriesJSON := ""
 	switch {
-	case path == "/":
+	case path == "/": {
 		title = "Top"
+		entries, err := s.Entries.GetEntries(ctx, 0, EntriesPerPage, true)
+		if err != nil {
+			println(err)
+		}
+		esj, err := json.Marshal(entries)
+		if err != nil {
+			println(err)
+		}
+		entriesJSON = string(esj)
+	}
 	case strings.HasPrefix(path, "/show/"):
 		entryID := strings.Replace(path, "/show/", "", 1)
 		entry, err := s.Entries.GetEntry(ctx, entryID)
@@ -32,14 +46,17 @@ func (s *Server) Index(gc *gin.Context) {
 			title = entry.Title
 			description = Ellipsis(12, entry.Body)
 		}
+		ej, _ := json.Marshal(entry)
+		entryJSON = string(ej)
 	default:
 		title = "Pistatium Blog (" + path + ")"
-
 	}
-	params := map[string]string{
+	params := map[string] interface{}{
 		"title":       title,
 		"description": description,
 		"titleEnc":    url.PathEscape(title),
+		"entriesJSON": template.JS(entriesJSON),
+		"entryJSON": template.JS(entryJSON),
 	}
 	gc.HTML(http.StatusOK, "index.html", params)
 }

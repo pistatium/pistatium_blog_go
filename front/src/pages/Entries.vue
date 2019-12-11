@@ -37,6 +37,19 @@
             empty: false,
         }),
         mounted() {
+            // load from html
+            this.page = parseInt(this.$route.params.page, 10) || 0
+            const json_data = document.getElementById("entries-json").textContent
+            if (json_data && json_data.startsWith("[")) {
+                const data = JSON.parse(json_data)
+                if (data.length > 0) {
+                    this.entries = data
+                    for (let e of data) {
+                        this.$root.entryHash[e.Id] = e
+                    }
+                    return
+                }
+            }
             this._fetchEntries()
         },
         watch: {
@@ -70,6 +83,7 @@
                     for (let e of res.data.entries) {
                         this.$root.entryHash[e.Id] = e
                     }
+                    document.title = "新着エントリ一覧 page" + this.page
                 }).catch(error => {
                     this.$root.error = error.response.statusText
                 }).finally(() => this.$root.loading = false)

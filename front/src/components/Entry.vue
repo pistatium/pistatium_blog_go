@@ -113,7 +113,9 @@
         },
         watch: {
             entry: function (val) {
-                document.title = this.entry.Title
+                if (this.show_detail) {
+                    document.title = this.entry.Title
+                }
                 if (window.twttr && window.twttr.widgets) {
                     window.twttr.widgets.load();
                 }

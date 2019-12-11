@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>{{.title}}</title>
+    <title>{{.title}} - Pistatium</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/railscasts.min.css">
@@ -19,7 +19,8 @@
 
       gtag('config', 'UA-3817632-9');
     </script>
-
+    <script type="application/json" id="entry-json">{{.entryJSON}}</script>
+    <script type="application/json" id="entries-json">{{.entriesJSON}}</script>
     <meta name="theme-color" content="#7cb342">
 
     <meta property="og:type" content="article"/>

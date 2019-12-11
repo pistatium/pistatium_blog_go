@@ -44,6 +44,17 @@
         methods: {
             loadEntry () {
                 this.entryId = this.$route.params.id
+
+                // load from html
+                const json_data = document.getElementById("entry-json").textContent
+                if (json_data && json_data.startsWith("{\"")) {
+                    const data = JSON.parse(json_data)
+                    if (data.Id) {
+                        this.entry = data
+                        return
+                    }
+                }
+                // load from cache
                 if (this.$root.entryHash[this.entryId]) {
                     this.entry = this.$root.entryHash[this.entryId]
                     return
