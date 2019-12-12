@@ -82,7 +82,22 @@
                     </v-form>
                 </v-card-text>
             </v-card>
+            <v-card>
+                <v-card-title>画像アップロード</v-card-title>
+                <v-card-actions>
+                    <v-form>
+                        <v-file-input name="file" accept="image/*" label="File input" v-model="file"></v-file-input>
+                        <v-btn @click="this.submitImage">Upload</v-btn>
+                    </v-form>
+                </v-card-actions>
+                <v-card-text>
+                    <div class="images" v-for="img in this.images" v-bind:key="img">
+                        <img v-bind:src="img">
+                        <input readonly v-bind:value="img" type="text">
+                    </div>
+                </v-card-text>
 
+            </v-card>
         </v-col>
 
     </v-row>
@@ -105,7 +120,7 @@
             axios.get('/admin/api/is_login').then(() => {
                 this.$root.isLogin = true
             })
-            this.timer = setInterval(this.send,10000)
+            this.timer = setInterval(this.send,30000)
         },
         complete: function() {
             clearInterval(this.timer)
@@ -115,6 +130,8 @@
             dialog: false,
             ts: '',
             timer: null,
+            file: null,
+            images: []
         }),
         methods: {
             send() {
@@ -123,6 +140,21 @@
                 }
                 axios.post('/admin/api/entries', this.editing).then((res) => {
                     this.ts = new Date().getTime()
+                }).catch((err) => {
+                    alert(err)
+                })
+            },
+            submitImage() {
+                let formData = new FormData();
+                formData.append('file', this.file, this.file.name);
+                let config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                };
+                axios.post('/admin/api/photos', formData, config).then((res) => {
+                    console.log(res)
+                    this.images.push(res.data.path)
                 }).catch((err) => {
                     alert(err)
                 })
@@ -143,6 +175,13 @@
     }
 </script>
 
-<style>
+<style scoped>
+    .images {
+    }
+
+    .images img {
+        max-width: 100px;
+        max-height: 100px;
+    }
 
 </style>
