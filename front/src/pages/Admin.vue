@@ -28,7 +28,7 @@
                             </v-btn>
                         </template>
                         <v-card>
-                            <v-card-text style="height: 90vh;">
+                            <v-card-text style="height: 90vh;" v-if="dialog">
                                 <Entry v-bind:entry="this.editing" v-bind:show_detail="true" v-bind:index="1"></Entry>
                             </v-card-text>
                         </v-card>
@@ -144,7 +144,5 @@
 </script>
 
 <style>
-    .main {
-        max-width: 1080px !important;
-    }
+
 </style>

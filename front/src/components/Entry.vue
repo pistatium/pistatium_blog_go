@@ -55,7 +55,7 @@
                                 align="center"
                                 justify="end"
                         >
-                            <span class="share-label">Share: </span>
+                            <span class="share-label d-none d-sm-flex" >Share: </span>
                             <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
                                    target="_blank">
                                 <v-icon dark>mdi-twitter</v-icon>
@@ -157,7 +157,7 @@
 
     .entry {
         font-size: 108%;
-        line-height: 220%;
+        line-height: 200%;
     }
 
     .entry-date {
@@ -206,6 +206,9 @@
 </style>
 
 <style>
+    .v-application .entry-body p {
+        margin: 12px 0 0 0;
+    }
     .v-application .entry-body h2 {
         border-left: 8px #558b2f solid;
         padding-left: 12px;
@@ -233,7 +236,6 @@
 
     .v-application .entry-body pre code {
         width: 100%;
-        margin: 5px 0;
         padding: 5px;
         background: rgb(31, 32, 34);
         line-height: 120%;
