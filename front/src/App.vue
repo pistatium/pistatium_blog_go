@@ -55,13 +55,13 @@
         max-width: 740px;
     }
     footer {
-        margin: 12px;
+        margin: 12px 0;
         font-size: 14px;
         text-align: center;
         font-weight: lighter;
     }
     .v-alert {
-        padding: 24px;
+        padding: 24px 0;
         margin: 24px 0 32px 0;
     }
 

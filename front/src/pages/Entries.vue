@@ -1,14 +1,12 @@
 <template>
     <div>
         <div class="headline page-header">新着エントリ一覧 <span v-if="page!==0">(page {{page}})</span></div>
-        <v-layout row wrap v-if="!empty">
-            <v-flex xs12>
-                <Entry v-for="(entry, index) in entries" v-bind:key="entry.id" v-bind:entry=entry v-bind:index="index"
-                       v-bind:show_detail="false"></Entry>
-            </v-flex>
+        <div v-if="!empty">
+            <Entry v-for="(entry, index) in entries" v-bind:key="entry.id" v-bind:entry=entry v-bind:index="index"
+                   v-bind:show_detail="false"></Entry>
 
 
-        </v-layout>
+        </div>
         <div v-else class="no-entry" border="left">
             これ以上記事はありません
         </div>
@@ -69,7 +67,7 @@
             },
         },
         methods: {
-            _fetchEntries () {
+            _fetchEntries() {
                 this.$root.loading = true;
                 this.empty = false
                 this.page = parseInt(this.$route.params.page, 10) || 0
@@ -95,15 +93,17 @@
 </script>
 <style scoped>
     .v-alert {
-        margin: 32px;
-        padding: 32px;
+        margin: 32px 0;
+        padding: 32px 0;
     }
-    .page-header{
+
+    .page-header {
         color: #818181;
         font-weight: bold;
         text-align: center;
         margin-top: 18px;
     }
+
     .no-entry {
         margin: 72px 0;
         text-align: center;

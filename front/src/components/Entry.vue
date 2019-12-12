@@ -47,7 +47,7 @@
                                     src="/img/kimihiro_n.jpg"
                             ></v-img>
                         </v-list-item-avatar>
-                        <v-list-item-content>
+                        <v-list-item-content class="author">
                             <v-list-item-subtitle>Author</v-list-item-subtitle>
                             <v-list-item-title>@kimihiro-n</v-list-item-title>
                         </v-list-item-content>
@@ -55,7 +55,7 @@
                                 align="center"
                                 justify="end"
                         >
-                            <span class="share-label d-none d-sm-flex" >Share: </span>
+                            <span class="share-label d-none d-sm-flex">Share: </span>
                             <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
                                    target="_blank">
                                 <v-icon dark>mdi-twitter</v-icon>
@@ -151,7 +151,7 @@
 
 <style scoped>
     .v-card {
-        margin: 12px 0 12px;
+        margin: 12px 0 12px 0;
         padding: 12px;
     }
 
@@ -194,7 +194,9 @@
     .ads-outer {
         margin: 40px 0;
     }
-
+    .author {
+        min-width: 100px;
+    }
     h1 {
         cursor: pointer;
     }
@@ -235,6 +237,7 @@
     }
 
     .v-application .entry-body pre code {
+        max-width: 100%;
         width: 100%;
         padding: 5px;
         background: rgb(31, 32, 34);
