@@ -49,7 +49,7 @@
                 const json_data = document.getElementById("entry-json").textContent
                 if (json_data && json_data.startsWith("{\"")) {
                     const data = JSON.parse(json_data)
-                    if (data.Id) {
+                    if (data.Id && data.Id == this.entryId) {
                         this.entry = data
                         return
                     }

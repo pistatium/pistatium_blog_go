@@ -70,6 +70,7 @@
             _fetchEntries() {
                 this.$root.loading = true;
                 this.empty = false
+                this.entries = []
                 this.page = parseInt(this.$route.params.page, 10) || 0
                 axios.get('/api/entries?page=' + this.page).then(res => {
                     this.entries = res.data.entries;
