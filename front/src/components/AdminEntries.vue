@@ -4,6 +4,7 @@
         <v-divider></v-divider>
         <v-list-item v-for="entry in entries" v-bind:key="entry.Id" v-on:click="edit(entry)">
             <v-list-item-content v-bind:class="entry.Public ? 'public' : 'private'">
+                <img class="thumbnail" v-bind:src="entry.Thumbnail">
                 <v-list-item-title>{{ entry.Title }}</v-list-item-title>
                 <v-list-item-subtitle>{{ entry.Datetime }}</v-list-item-subtitle>
             </v-list-item-content>
@@ -48,5 +49,10 @@
 <style scoped>
     .private {
         background: #cccccc;
+    }
+    .thumbnail {
+        max-width: 120px;
+        max-height: 100px;
+        margin: 0 auto;
     }
 </style>

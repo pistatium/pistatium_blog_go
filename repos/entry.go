@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/datastore"
 	"context"
 	"fmt"
+	"net/url"
 	"strconv"
 	"time"
 )
@@ -15,9 +16,10 @@ type Entry struct {
 	More       string     `datastore:"more,noindex"`
 	Category   string     `datastore:"category"`
 	Datetime   *time.Time `datastore:"datetime"`
-	Updated    *time.Time `datestore:"datetime"`
+	Updated    *time.Time `datastore:"updated"`
 	Public     bool       `datastore:"public"`
 	IsMarkdown bool       `datastore:"is_markdown,noindex"`
+	Thumbnail  string     `datastore:thumbnail,noindex`
 	//ModifyUser string            `datastore:"modify_user"`
 	//CreateUser *datastore.Entity `datastore:"create_user"`
 }
@@ -131,6 +133,10 @@ func (d DatastoreEntryRepoImpl) UpdateEntry(ctx context.Context, id string, entr
 	entry.Updated = &now
 
 	entry.IsMarkdown = true
+	if entry.Thumbnail == "" {
+		titleEnc := url.PathEscape(entry.Title)
+		entry.Thumbnail = "https://kimihiro-n.firebaseapp.com/uniqueogp?title=" + titleEnc + "&brand=Pistatium&mode=white"
+	}
 
 	key := datastore.IDKey("Blog", int64(iid), nil)
 	fmt.Println(key, entry)

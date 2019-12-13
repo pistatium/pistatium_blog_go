@@ -26,6 +26,7 @@ func (s *Server) Index(gc *gin.Context) {
 	description := ""
 	entryJSON := ""
 	entriesJSON := ""
+	thumbnail := ""
 	switch {
 	case path == "/": {
 		title = "Top"
@@ -45,6 +46,7 @@ func (s *Server) Index(gc *gin.Context) {
 		if err == nil {
 			title = entry.Title
 			description = Ellipsis(12, entry.Body)
+			thumbnail = entry.Thumbnail
 		}
 		ej, _ := json.Marshal(entry)
 		entryJSON = string(ej)
@@ -57,6 +59,7 @@ func (s *Server) Index(gc *gin.Context) {
 		"titleEnc":    url.PathEscape(title),
 		"entriesJSON": template.JS(entriesJSON),
 		"entryJSON": template.JS(entryJSON),
+		"thumbnail": thumbnail,
 	}
 	gc.HTML(http.StatusOK, "index.html", params)
 }

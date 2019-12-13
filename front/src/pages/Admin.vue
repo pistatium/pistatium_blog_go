@@ -53,6 +53,12 @@
                                 required
                         >
                         </v-text-field>
+                        <v-text-field
+                                v-model="editing.Thumbnail"
+                                label="thumbnail"
+                                required
+                        >
+                        </v-text-field>
                         <v-textarea
                                 id="edit_body"
                                 v-model="editing.Body"
@@ -93,7 +99,7 @@
                 <v-card-text>
                     <div class="images" v-for="img in this.images" v-bind:key="img">
                         <img v-bind:src="img">
-                        <input readonly v-bind:value="img" type="text">
+                        <input readonly v-bind:value="absPath(img)" type="text" class="pathbox" onclick="this.select();">
                     </div>
                 </v-card-text>
 
@@ -159,6 +165,15 @@
                     alert(err)
                 })
             },
+            absPath(path) {
+                let port = window.location.port
+                if (port === '443') {
+                    port = ''
+                } else {
+                    port = ':' + port
+                }
+                return `${window.location.protocol}//${window.location.hostname}${port}${path}`
+            }
             // IMEが暴発するのでPEND
             // input_tab(e) {
             //
@@ -182,6 +197,9 @@
     .images img {
         max-width: 100px;
         max-height: 100px;
+    }
+    .pathbox {
+        width: 100%;
     }
 
 </style>
