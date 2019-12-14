@@ -33,6 +33,10 @@ const router = new VueRouter({
     routes
 })
 
+router.afterEach((to, from) => {
+    gtag('config', 'UA-3817632-9', {'page_path': to.path});
+})
+
 new Vue({
     router,
     vuetify,
