@@ -1,5 +1,7 @@
 runtime: go112
 
+default_expiration: "1d"
+
 handlers:
   - url: /ads.txt
     static_files: front/dist/ads.txt

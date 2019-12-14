@@ -1,89 +1,83 @@
 <template>
-    <v-lazy
-            v-model="isActive"
-            :options="{
-          threshold: .5
-        }"
-            min-height="200"
-    >
-        <div>
-            <v-card color="">
 
-                <v-card-text class="entry">
-                    <p class="entry-date">
-                        &nbsp;&nbsp;{{ date }}
-                    </p>
+    <div>
+        <v-card color="">
 
-                    <router-link tag="h1" v-bind:to=link
-                                 class="display-1 font-weight-black light-green--text text--darken-3">
-                        {{ entry.Title }}
-                    </router-link>
+            <v-card-text class="entry">
+                <p class="entry-date">
+                    &nbsp;&nbsp;{{ date }}
+                </p>
 
-                    <div class="text--primary entry-body" v-html="markdown"></div>
+                <router-link tag="h1" v-bind:to=link
+                             class="display-1 font-weight-black light-green--text text--darken-3">
+                    {{ entry.Title }}
+                </router-link>
 
-                    <InArticleAdsense
-                            class="ads-in-article"
-                            v-if="show_detail && entry.More"
-                            data-ad-client="ca-pub-2359565431337443"
-                            data-ad-slot="5140793616">
-                    </InArticleAdsense>
+                <div class="text--primary entry-body" v-html="markdown"></div>
 
-                    <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
+                <InArticleAdsense
+                        class="ads-in-article"
+                        v-if="show_detail && entry.More"
+                        data-ad-client="ca-pub-2359565431337443"
+                        data-ad-slot="5140793616">
+                </InArticleAdsense>
 
-                </v-card-text>
+                <div class="text--primary entry-body entry-more" v-html="markdown_more" v-if="show_detail"></div>
 
-                <v-card-actions v-if="!show_detail && entry.More">
-                    <v-btn
-                            color="accent"
-                            block
-                            large
-                            raised
-                            :to=link
-                    >
-                        &gt; 続きを読む
-                    </v-btn>
+            </v-card-text>
+
+            <v-card-actions v-if="!show_detail && entry.More">
+                <v-btn
+                        color="accent"
+                        block
+                        large
+                        raised
+                        :to=link
+                >
+                    &gt; 続きを読む
+                </v-btn>
+            </v-card-actions>
+
+            <div v-if="show_detail">
+                <v-divider></v-divider>
+                <v-card-actions dark>
+                    <v-list-item class="grow">
+                        <v-list-item-avatar color="grey darken-3">
+                            <v-img
+                                    src="/img/kimihiro_n.jpg"
+                            ></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content class="author">
+                            <v-list-item-subtitle>Author</v-list-item-subtitle>
+                            <v-list-item-title>@kimihiro-n</v-list-item-title>
+                        </v-list-item-content>
+                        <v-row
+                                align="center"
+                                justify="end"
+                        >
+                            <span class="share-label d-none d-sm-flex">Share: </span>
+                            <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
+                                   target="_blank">
+                                <v-icon dark>mdi-twitter</v-icon>
+                            </v-btn>
+                            <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link
+                                   target="_blank">
+                                <v-icon dark>mdi-alpha-b-box</v-icon>
+                            </v-btn>
+                        </v-row>
+                    </v-list-item>
                 </v-card-actions>
+            </div>
+        </v-card>
 
-                <div v-if="show_detail">
-                    <v-divider></v-divider>
-                    <v-card-actions dark>
-                        <v-list-item class="grow">
-                            <v-list-item-avatar color="grey darken-3">
-                                <v-img
-                                        src="/img/kimihiro_n.jpg"
-                                ></v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content>
-                                <v-list-item-subtitle>Author</v-list-item-subtitle>
-                                <v-list-item-title>@kimihiro-n</v-list-item-title>
-                            </v-list-item-content>
-                            <v-row
-                                    align="center"
-                                    justify="end"
-                            >
-                                <span class="share-label">Share: </span>
-                                <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
-                                       target="_blank">
-                                    <v-icon dark>mdi-twitter</v-icon>
-                                </v-btn>
-                                <v-btn class="mx-2" fab dark small color="primary" :href=hatena_bookmark_link
-                                       target="_blank">
-                                    <v-icon dark>mdi-alpha-b-box</v-icon>
-                                </v-btn>
-                            </v-row>
-                        </v-list-item>
-                    </v-card-actions>
-                </div>
-            </v-card>
+        <Adsense
+                class="ads-outer"
+                v-if="index % 3 === 1 && ! show_detail"
+                data-ad-client="ca-pub-2359565431337443"
+                data-ad-slot="9814535793">
+        </Adsense>
+    </div>
 
-            <Adsense
-                    class="ads-outer"
-                    v-if="index % 3 === 1 || show_detail"
-                    data-ad-client="ca-pub-2359565431337443"
-                    data-ad-slot="9814535793">
-            </Adsense>
-        </div>
-    </v-lazy>
 </template>
 
 <script>
@@ -119,17 +113,14 @@
         },
         watch: {
             entry: function (val) {
-                document.title = this.entry.Title
-            },
-            isActive: function (val) {
+                if (this.show_detail) {
+                    document.title = this.entry.Title
+                }
                 if (window.twttr && window.twttr.widgets) {
                     window.twttr.widgets.load();
                 }
-            }
+            },
         },
-        data: () => ({
-            isActive: false
-        }),
         computed: {
             link: function () {
                 return `/show/${this.entry.Id}`
@@ -160,13 +151,13 @@
 
 <style scoped>
     .v-card {
-        margin: 12px 0 48px;
+        margin: 12px 0 12px 0;
         padding: 12px;
     }
 
     .entry {
         font-size: 108%;
-        line-height: 220%;
+        line-height: 200%;
     }
 
     .entry-date {
@@ -181,7 +172,6 @@
     .entry-more {
 
     }
-
 
     .entry-date .v-icon {
         padding-right: 6px;
@@ -202,9 +192,11 @@
     }
 
     .ads-outer {
-        margin-bottom: 40px;
+        margin: 40px 0;
     }
-
+    .author {
+        min-width: 100px;
+    }
     h1 {
         cursor: pointer;
     }
@@ -216,6 +208,9 @@
 </style>
 
 <style>
+    .v-application .entry-body p {
+        margin: 12px 0 0 0;
+    }
     .v-application .entry-body h2 {
         border-left: 8px #558b2f solid;
         padding-left: 12px;
@@ -242,8 +237,8 @@
     }
 
     .v-application .entry-body pre code {
+        max-width: 100%;
         width: 100%;
-        margin: 5px 0;
         padding: 5px;
         background: rgb(31, 32, 34);
         line-height: 120%;
@@ -259,5 +254,11 @@
         line-height: 120%;
         color: #a5c261;
     }
-
+    .v-application blockquote {
+        border-left: 6px solid #dcdcdc;
+        background: #fafafa;
+        margin: 6px 0;
+        padding-left: 12px;
+        font-size: 80%;
+    }
 </style>

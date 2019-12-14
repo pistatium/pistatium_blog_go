@@ -73,7 +73,7 @@ func (s *Server) UploadPhoto(gc *gin.Context) {
 		return
 	}
 
-	gc.JSON(http.StatusOK, &map[string]string{"status": "uploaded", "id": strconv.Itoa(int(img.Id))})
+	gc.JSON(http.StatusOK, &map[string]string{"status": "uploaded", "path": fmt.Sprintf("/photo/show/%d.jpg",img.Id)})
 }
 
 func (s *Server) IsLogin(gc *gin.Context) {

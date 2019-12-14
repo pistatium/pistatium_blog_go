@@ -19,11 +19,6 @@
 
             <router-view></router-view>
 
-            <Adsense
-                    data-ad-client="ca-pub-2359565431337443"
-                    data-ad-slot="9814535793">
-            </Adsense>
-
             <footer>
                 ©2019 pistatium.
             </footer>
@@ -60,14 +55,18 @@
         max-width: 740px;
     }
     footer {
-        margin: 12px;
+        margin: 12px 0;
         font-size: 14px;
         text-align: center;
         font-weight: lighter;
     }
     .v-alert {
-        padding: 24px;
+        padding: 24px 0;
         margin: 24px 0 32px 0;
+    }
+
+    .ads-outer {
+        margin: 10px 0;
     }
 </style>
 

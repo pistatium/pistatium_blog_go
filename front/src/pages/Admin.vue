@@ -28,7 +28,7 @@
                             </v-btn>
                         </template>
                         <v-card>
-                            <v-card-text style="height: 90vh;">
+                            <v-card-text style="height: 90vh;" v-if="dialog">
                                 <Entry v-bind:entry="this.editing" v-bind:show_detail="true" v-bind:index="1"></Entry>
                             </v-card-text>
                         </v-card>
@@ -50,6 +50,12 @@
                         <v-text-field
                                 v-model="editing.Title"
                                 label="title"
+                                required
+                        >
+                        </v-text-field>
+                        <v-text-field
+                                v-model="editing.Thumbnail"
+                                label="thumbnail"
                                 required
                         >
                         </v-text-field>
@@ -82,7 +88,22 @@
                     </v-form>
                 </v-card-text>
             </v-card>
+            <v-card>
+                <v-card-title>画像アップロード</v-card-title>
+                <v-card-actions>
+                    <v-form>
+                        <v-file-input name="file" accept="image/*" label="File input" v-model="file"></v-file-input>
+                        <v-btn @click="this.submitImage">Upload</v-btn>
+                    </v-form>
+                </v-card-actions>
+                <v-card-text>
+                    <div class="images" v-for="img in this.images" v-bind:key="img">
+                        <img v-bind:src="img">
+                        <input readonly v-bind:value="absPath(img)" type="text" class="pathbox" onclick="this.select();">
+                    </div>
+                </v-card-text>
 
+            </v-card>
         </v-col>
 
     </v-row>
@@ -105,7 +126,7 @@
             axios.get('/admin/api/is_login').then(() => {
                 this.$root.isLogin = true
             })
-            this.timer = setInterval(this.send,10000)
+            this.timer = setInterval(this.send,30000)
         },
         complete: function() {
             clearInterval(this.timer)
@@ -115,6 +136,8 @@
             dialog: false,
             ts: '',
             timer: null,
+            file: null,
+            images: []
         }),
         methods: {
             send() {
@@ -127,6 +150,30 @@
                     alert(err)
                 })
             },
+            submitImage() {
+                let formData = new FormData();
+                formData.append('file', this.file, this.file.name);
+                let config = {
+                    headers: {
+                        'content-type': 'multipart/form-data'
+                    }
+                };
+                axios.post('/admin/api/photos', formData, config).then((res) => {
+                    console.log(res)
+                    this.images.push(res.data.path)
+                }).catch((err) => {
+                    alert(err)
+                })
+            },
+            absPath(path) {
+                let port = window.location.port
+                if (port === '443') {
+                    port = ''
+                } else {
+                    port = ':' + port
+                }
+                return `${window.location.protocol}//${window.location.hostname}${port}${path}`
+            }
             // IMEが暴発するのでPEND
             // input_tab(e) {
             //
@@ -143,8 +190,16 @@
     }
 </script>
 
-<style>
-    .main {
-        max-width: 1080px !important;
+<style scoped>
+    .images {
     }
+
+    .images img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    .pathbox {
+        width: 100%;
+    }
+
 </style>
