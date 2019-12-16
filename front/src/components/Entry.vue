@@ -246,6 +246,7 @@
     }
 
     .v-application .entry-body code {
+        max-width: 100%;
         font-size: 90%;
         font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
         padding: 3px;
