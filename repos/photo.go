@@ -8,11 +8,12 @@ import (
 )
 
 type Photo struct {
-	Id       int64      `datastore:"-"`
-	Comment  string     `datastore:"comment"`
-	Datetime *time.Time `datastore:"datetime"`
-	Image    []byte     `datastore:"image,noindex"`
-	Title    string     `datastore:"title"`
+	Id          int64      `datastore:"-"`
+	Comment     string     `datastore:"comment"`
+	Datetime    *time.Time `datastore:"datetime"`
+	Image       []byte     `datastore:"image,noindex"`
+	Title       string     `datastore:"title"`
+	ContentType string     `datastore:"contenttype"`
 }
 
 type PhotoRepo interface {

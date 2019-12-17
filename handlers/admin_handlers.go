@@ -1,14 +1,23 @@
 package handlers
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pistatium/pistatium_blog_go/repos"
+	"golang.org/x/image/draw"
+	"image"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"time"
 )
+
+const ImageMaxSize = 720
 
 type LoginForm struct {
 	Username string `json:"username"`
@@ -54,26 +63,25 @@ func (s *Server) PostEntry(gc *gin.Context) {
 func (s *Server) UploadPhoto(gc *gin.Context) {
 	ctx := gc.Request.Context()
 
-	file, header , err := gc.Request.FormFile("file")
+	file, header, err := gc.Request.FormFile("file")
 	filename := header.Filename
 	bs, err := ioutil.ReadAll(file)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	now := time.Now()
-	img := repos.Photo{
-		Datetime: &now,
-		Image:    bs,
-		Title:    filename,
+	img, err := generatePhoto(bs, filename)
+	if err != nil {
+		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
-	err = s.Photos.PutPhoto(ctx, &img)
+	err = s.Photos.PutPhoto(ctx, img)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	gc.JSON(http.StatusOK, &map[string]string{"status": "uploaded", "path": fmt.Sprintf("/photo/show/%d.jpg",img.Id)})
+	gc.JSON(http.StatusOK, &map[string]string{"status": "uploaded", "path": fmt.Sprintf("/photo/show/%d.jpg", img.Id)})
 }
 
 func (s *Server) IsLogin(gc *gin.Context) {
@@ -99,4 +107,63 @@ func (s *Server) AdminLogin(gc *gin.Context) {
 	}
 	SetLogin(gc, u.Username)
 	gc.JSON(http.StatusOK, &map[string]string{"status": "logged in",})
+}
+
+func generatePhoto(bs []byte, filename string) (*repos.Photo, error) {
+	now := time.Now()
+	format, err := guessImageFormat(bytes.NewBuffer(bs))
+	if err != nil {
+		return nil, err
+	}
+
+	img, _, err := image.Decode(bytes.NewBuffer(bs))
+	if err != nil {
+		return nil, err
+	}
+
+	w := float32(img.Bounds().Dx())
+	h := float32(img.Bounds().Dy())
+
+	if w > h {
+		h = float32(ImageMaxSize) / w * h
+		w = float32(ImageMaxSize)
+	} else {
+		w = float32(ImageMaxSize) / h * w
+		h = float32(ImageMaxSize)
+	}
+	dst := image.NewRGBA(image.Rect(0, 0, int(w), int(h)))
+	draw.CatmullRom.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
+	contentType := "image/jpeg"
+	var buf bytes.Buffer
+	switch format {
+	case "png":
+		err = png.Encode(&buf, dst)
+		if err != nil {
+			return nil, err
+		}
+		contentType = "image/png"
+	case "gif":
+		err = gif.Encode(&buf, dst, nil)
+		if err != nil {
+			return nil, err
+		}
+		contentType = "image/png"
+	default:
+		err = jpeg.Encode(&buf, dst, &jpeg.Options{Quality: 85})
+		if err != nil {
+			return nil, err
+		}
+	}
+	p := repos.Photo{
+		Datetime:    &now,
+		Image:       buf.Bytes(),
+		Title:       filename,
+		ContentType: contentType,
+	}
+	return &p, nil
+}
+
+func guessImageFormat(r io.Reader) (format string, err error) {
+	_, format, err = image.DecodeConfig(r)
+	return
 }

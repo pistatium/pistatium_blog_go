@@ -17,7 +17,10 @@ func (s *Server) GetPhoto(gc *gin.Context) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
+	contentType := photo.ContentType
+	if contentType == "" {
+		contentType = "image/jpeg"
+	}
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
-	gc.Data(http.StatusOK, "image/jpeg", photo.Image)
+	gc.Data(http.StatusOK, contentType, photo.Image)
 }
