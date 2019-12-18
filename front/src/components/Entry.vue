@@ -211,6 +211,13 @@
     .v-application .entry-body p {
         margin: 12px 0 0 0;
     }
+
+    .v-application .entry-body h1 {
+        border-top: 1px solid #d1d1d1;
+        padding-top: 24px;
+        margin: 32px 0 6px 0;
+    }
+
     .v-application .entry-body h2 {
         border-left: 8px #558b2f solid;
         padding-left: 12px;
