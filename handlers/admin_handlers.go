@@ -7,7 +7,6 @@ import (
 	"github.com/pistatium/pistatium_blog_go/repos"
 	"golang.org/x/image/draw"
 	"image"
-	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"io"
@@ -112,51 +111,49 @@ func (s *Server) AdminLogin(gc *gin.Context) {
 func generatePhoto(bs []byte, filename string) (*repos.Photo, error) {
 	now := time.Now()
 	format, err := guessImageFormat(bytes.NewBuffer(bs))
+	var contentType string
 	if err != nil {
-		return nil, err
-	}
-
-	img, _, err := image.Decode(bytes.NewBuffer(bs))
-	if err != nil {
-		return nil, err
-	}
-
-	w := float32(img.Bounds().Dx())
-	h := float32(img.Bounds().Dy())
-
-	if w > h {
-		h = float32(ImageMaxSize) / w * h
-		w = float32(ImageMaxSize)
+		contentType = ""
 	} else {
-		w = float32(ImageMaxSize) / h * w
-		h = float32(ImageMaxSize)
+		contentType = "image/" + format
 	}
-	dst := image.NewRGBA(image.Rect(0, 0, int(w), int(h)))
-	draw.CatmullRom.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
-	contentType := "image/jpeg"
-	var buf bytes.Buffer
-	switch format {
-	case "png":
-		err = png.Encode(&buf, dst)
+
+	// リサイズ
+	if format == "jpeg" || format == "png" {
+		img, _, err := image.Decode(bytes.NewBuffer(bs))
 		if err != nil {
 			return nil, err
 		}
-		contentType = "image/png"
-	case "gif":
-		err = gif.Encode(&buf, dst, nil)
-		if err != nil {
-			return nil, err
+
+		w := float32(img.Bounds().Dx())
+		h := float32(img.Bounds().Dy())
+
+		if w > ImageMaxSize {
+			h = float32(ImageMaxSize) / w * h
+			w = float32(ImageMaxSize)
 		}
-		contentType = "image/png"
-	default:
-		err = jpeg.Encode(&buf, dst, &jpeg.Options{Quality: 85})
-		if err != nil {
-			return nil, err
+		dst := image.NewRGBA(image.Rect(0, 0, int(w), int(h)))
+		draw.CatmullRom.Scale(dst, dst.Bounds(), img, img.Bounds(), draw.Over, nil)
+
+		var buf bytes.Buffer
+		switch format {
+		case "png":
+			err = png.Encode(&buf, dst)
+			if err != nil {
+				return nil, err
+			}
+		case "jpeg":
+			err = jpeg.Encode(&buf, dst, &jpeg.Options{Quality: 85})
+			if err != nil {
+				return nil, err
+			}
 		}
+		bs = buf.Bytes()
 	}
+
 	p := repos.Photo{
 		Datetime:    &now,
-		Image:       buf.Bytes(),
+		Image:       bs,
 		Title:       filename,
 		ContentType: contentType,
 	}
