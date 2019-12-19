@@ -50,7 +50,6 @@ func (s *Server) PostEntry(gc *gin.Context) {
 		gc.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("id", entry.Id)
 	err := s.Entries.UpdateEntry(ctx, entry.Id, entry)
 	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

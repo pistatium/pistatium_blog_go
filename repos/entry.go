@@ -3,7 +3,6 @@ package repos
 import (
 	"cloud.google.com/go/datastore"
 	"context"
-	"fmt"
 	"net/url"
 	"strconv"
 	"time"
@@ -139,7 +138,6 @@ func (d DatastoreEntryRepoImpl) UpdateEntry(ctx context.Context, id string, entr
 	}
 
 	key := datastore.IDKey("Blog", int64(iid), nil)
-	fmt.Println(key, entry)
 	if _, err := client.Put(ctx, key, &entry); err != nil {
 		return err
 	}
