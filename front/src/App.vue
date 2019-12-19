@@ -1,9 +1,10 @@
 <template>
     <v-app id="app">
         <Navigation></Navigation>
+
         <v-container grid-list-lg class="main">
             <v-card loading v-if="this.$root.loading">
-                <v-card-text>
+                <v-card-text class="loading-body">
                     Loading...
                 </v-card-text>
             </v-card>
@@ -64,9 +65,8 @@
         padding: 24px 0;
         margin: 24px 0 32px 0;
     }
-
-    .ads-outer {
-        margin: 10px 0;
+    .loading-body {
+        margin: 20px;
     }
 </style>
 

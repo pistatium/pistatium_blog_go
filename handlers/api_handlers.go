@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	CacheDuration            = 60
+	CacheDuration  = 60
 	EntriesPerPage = 10
 )
 
@@ -33,7 +33,6 @@ func (s *Server) GetEntry(gc *gin.Context) {
 
 func (s *Server) GetEntries(gc *gin.Context) {
 	ctx := gc.Request.Context()
-
 	page, _ := strconv.Atoi(gc.DefaultQuery("page", "0"))
 	offset := 0
 	if page != 0 {
