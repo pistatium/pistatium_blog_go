@@ -16,7 +16,7 @@ jobs:
           command: yarn build
           working_directory: front
       - run:
-          command: npm install -g css-optimization
+          command: npm install css-optimization
           working_directory: front
       - run:
           command: css-optimization -c dist/css
