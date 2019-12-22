@@ -15,6 +15,13 @@ jobs:
       - run:
           command: yarn build
           working_directory: front
+        - run:
+          command: npm install -g css-optimization
+          working_directory: front
+        - run:
+          command: css-optimization -c dist/css
+          working_directory: front
+
       - save_cache:
           key: yarn-packages-{{ checksum "front/yarn.lock" }}
           paths:
