@@ -1,0 +1,17 @@
+name: demo
+url: 'https://kimihiro-n.appspot.com/'
+userAgent: 'css optimize'
+
+steps:
+  - action:
+      type: wait
+      duration: 1500
+  - action:
+      type: hover
+      selector: '#app div.v-card__actions > a'
+  - action:
+      type: click
+      selector: '#app > div > div.navigation > header > div > button' 
+  - action:
+      type: click
+      selector: '#app > div > div.container.main.grid-list-lg > div > div:nth-child(2) > div:nth-child(1) > div > div > h1' 

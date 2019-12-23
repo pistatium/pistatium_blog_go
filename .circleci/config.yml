@@ -19,7 +19,7 @@ jobs:
           command: npm install css-optimization
           working_directory: front
       - run:
-          command: npx css-optimization -c dist/css
+          command: npx css-optimization -p . -i . -c dist/css 
           working_directory: front
 
       - save_cache:
