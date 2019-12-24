@@ -5,6 +5,8 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
+      - run:
+          command: sudo apt-get update && sudo apt-get install libxtst6
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "front/yarn.lock" }}
@@ -16,7 +18,7 @@ jobs:
           command: yarn build
           working_directory: front
       - run:
-          command: sudo npm install -g css-optimization
+          command: sudo npm install -g css-optimization puppeteer --unsafe-perm=true
           working_directory: front
       - run:
           command: css-optimization -p . -i . -c dist/css
