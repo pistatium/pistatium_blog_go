@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: sudo apt-get update && sudo apt-get install libxtst6
+          command: sudo apt-get update && sudo apt-get install libxtst6 libnss3-dev -y
       - restore_cache:
           keys:
             - yarn-packages-{{ checksum "front/yarn.lock" }}
