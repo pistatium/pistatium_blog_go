@@ -21,7 +21,7 @@ jobs:
           command: sudo npm install -g css-optimization puppeteer --unsafe-perm=true
           working_directory: front
       - run:
-          command: css-optimization -p . -i . -c dist/css
+          command: mkdir images && css-optimization -p cases -i images -c dist/css
           working_directory: front
 
       - save_cache:
