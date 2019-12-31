@@ -49,7 +49,7 @@
 
 <style scoped>
     .container {
-        margin-top: 48px;
+        margin-top: 24px;
         padding: 0px;
     }
     .main {

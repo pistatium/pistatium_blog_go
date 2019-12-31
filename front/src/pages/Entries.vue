@@ -102,7 +102,7 @@
         color: #818181;
         font-weight: bold;
         text-align: center;
-        margin-top: 18px;
+        margin-top: 32px;
     }
 
     .no-entry {

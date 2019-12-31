@@ -42,20 +42,20 @@
                 <v-divider></v-divider>
                 <v-card-actions dark>
                     <v-list-item class="grow">
-                        <v-list-item-avatar color="grey darken-3">
-                            <v-img
-                                    src="/img/kimihiro_n.jpg"
-                            ></v-img>
-                        </v-list-item-avatar>
-                        <v-list-item-content class="author">
-                            <v-list-item-subtitle>Author</v-list-item-subtitle>
-                            <v-list-item-title>@kimihiro-n</v-list-item-title>
-                        </v-list-item-content>
+                        <!--<v-list-item-avatar color="grey darken-3">-->
+                            <!--<v-img-->
+                                    <!--src="/img/kimihiro_n.jpg"-->
+                            <!--&gt;</v-img>-->
+                        <!--</v-list-item-avatar>-->
+                        <!--<v-list-item-content class="author">-->
+                            <!--<v-list-item-subtitle>Author</v-list-item-subtitle>-->
+                            <!--<v-list-item-title>@kimihiro-n</v-list-item-title>-->
+                        <!--</v-list-item-content>-->
                         <v-row
                                 align="center"
                                 justify="end"
                         >
-                            <span class="share-label d-none d-sm-flex">Share: </span>
+                            <span class="share-label">Share: </span>
                             <v-btn class="mx-2" fab dark small color="primary" :href=tweet_share_link
                                    target="_blank">
                                 <v-icon dark>mdi-twitter</v-icon>
@@ -129,7 +129,7 @@
                 if (!this.entry.Datetime) {
                     return ""
                 }
-                return this.entry.Datetime.slice(0, 10)
+                return this.entry.Datetime.slice(0, 10).replace(/-/g, ".")
             },
             markdown: function () {
                 return marked(this.entry.Body || "")
@@ -152,9 +152,9 @@
 <style scoped>
 
     .v-card {
-        margin: 12px 0 12px 0;
-        padding: 0 12px;
-        border-top: 6px solid #7cb342;
+        margin: 12px 0 24px 0;
+        padding: 0 12px 12px 12px;
+        border-top: 4px solid #7cb342;
     }
 
     .entry {
@@ -164,7 +164,8 @@
 
     @media screen and (max-width: 480px) {
         .v-card .entry {
-            padding: 0;
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 
@@ -200,7 +201,7 @@
 
     .ads-in-article {
         padding: 12px 0;
-        margin: 24px -28px;
+        margin: 24px 0;
         background: #f4f4f4;
     }
 

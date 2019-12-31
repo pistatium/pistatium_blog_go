@@ -1,8 +1,8 @@
 <template>
-    <v-card>
+    <v-card class="box">
         <v-list two-line>
             <v-list-item-group>
-                <v-subheader class="">最近のエントリ</v-subheader>
+                <v-subheader class="head">最近のエントリ</v-subheader>
                 <v-list-item v-for="entry in entries" v-bind:key="entry.Id" link :to="link(entry)" v-show="entry.Id !== entryId" class="item">
                     <v-list-item-content>
                         <v-list-item-subtitle>{{date(entry)}}</v-list-item-subtitle>
@@ -48,7 +48,7 @@
                 if (!e.Datetime) {
                     return ""
                 }
-                return e.Datetime.slice(0, 10)
+                return e.Datetime.slice(0, 10).replace(/-/g, ".")
             },
             stripHtml(s) {
                 return s.replace(/<\/?[^>]+(>|$)/g, "").slice(0, 200)
@@ -58,8 +58,17 @@
 </script>
 
 <style scoped>
-    .title {
-        font-weight: bold;
+    .box {
+        border-top: 4px solid #7cb342;
+        padding: 0;
+    }
+    .box .head {
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .box .title {
+        font-weight: 600;
+        font-size: 18px;
     }
     .item {
         border-bottom: #fafafa 2px solid;
