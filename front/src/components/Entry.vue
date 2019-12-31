@@ -9,7 +9,7 @@
                 </p>
 
                 <router-link tag="h1" v-bind:to=link
-                             class="display-1 font-weight-black light-green--text text--darken-3">
+                             class="entry-title light-green--text text--darken-3">
                     {{ entry.Title }}
                 </router-link>
 
@@ -150,14 +150,27 @@
 </script>
 
 <style scoped>
+
     .v-card {
         margin: 12px 0 12px 0;
-        padding: 12px;
+        padding: 0 12px;
+        border-top: 6px solid #7cb342;
     }
 
     .entry {
         font-size: 108%;
         line-height: 200%;
+    }
+
+    @media screen and (max-width: 480px) {
+        .v-card .entry {
+            padding: 0;
+        }
+    }
+
+    .entry-title {
+        font-weight: 600;
+        line-height: 120%;
     }
 
     .entry-date {
