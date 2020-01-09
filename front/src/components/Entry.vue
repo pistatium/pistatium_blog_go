@@ -237,7 +237,9 @@
         padding-left: 12px;
         margin: 32px 0 12px 0;
     }
-
+    .v-application .entry-body h2 {
+        margin-top: 8px;
+    }
     .v-application .entry-body a {
         text-decoration: none;
         font-weight: bold;
