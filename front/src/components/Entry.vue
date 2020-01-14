@@ -223,7 +223,7 @@
 
 <style>
     .v-application .entry-body p {
-        margin: 12px 0 0 0;
+        margin: 4px 0 0 0;
     }
 
     .v-application .entry-body h1 {
@@ -238,7 +238,7 @@
         margin: 32px 0 12px 0;
     }
     .v-application .entry-body h3 {
-        margin-top: 8px;
+        margin-top: 12px;
     }
     .v-application .entry-body a {
         text-decoration: none;
@@ -266,6 +266,7 @@
         background: rgb(31, 32, 34);
         line-height: 120%;
         color: #ffffff;
+        margin-top: 8px;
     }
 
     .v-application .entry-body code {
