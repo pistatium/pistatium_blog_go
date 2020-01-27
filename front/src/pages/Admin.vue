@@ -1,5 +1,5 @@
 <template>
-    <v-row no-gutters>
+    <v-row no-gutters class="editor">
 
         <v-col cols="3" v-if="this.$root.isLogin">
             <AdminEntries v-bind:ts="this.ts"></AdminEntries>
@@ -194,6 +194,9 @@
     .images {
     }
 
+    .editor {
+        margin-top: 24px;
+    }
     .images img {
         max-width: 100px;
         max-height: 100px;
