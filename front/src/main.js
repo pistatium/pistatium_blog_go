@@ -4,10 +4,12 @@ import Entry from "./pages/Entry"
 import Entries from "./pages/Entries"
 import Admin from "./pages/Admin"
 import vuetify from './plugins/vuetify'
+import Portfolio from "./pages/Portfolio"
 import VueRouter from 'vue-router'
 
 import Adsense from 'vue-google-adsense/dist/Adsense.min.js'
 import InArticleAdsense from 'vue-google-adsense/dist/InArticleAdsense.min.js'
+
 
 Vue.use(require('vue-script2'))
 
@@ -22,6 +24,7 @@ const routes = [
     {path: '/admin/', component: Admin},
     {path: '/show/:id', component: Entry},
     {path: '/:page', component: Entries},
+    {path: '/portfolio', component: Portfolio},
     {path: '/', component: Entries},
 ]
 
