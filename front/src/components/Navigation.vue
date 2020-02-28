@@ -28,7 +28,6 @@
                 <v-divider></v-divider>
                 <v-subheader>Links</v-subheader>
 
-
                 <v-list-item link href="https://qiita.com/kimihiro_n" target="_blank" rel="noopener">
                     <v-list-item-action>
                         <v-icon>mdi-post</v-icon>
@@ -88,7 +87,7 @@
             </v-toolbar-title>
 
             <v-spacer/>
-
+            Menu
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
         </v-app-bar>
     </div>

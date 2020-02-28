@@ -23,8 +23,8 @@ Vue.use(VueRouter)
 const routes = [
     {path: '/admin/', component: Admin},
     {path: '/show/:id', component: Entry},
-    {path: '/:page', component: Entries},
     {path: '/portfolio', component: Portfolio},
+    {path: '/:page', component: Entries},
     {path: '/', component: Entries},
 ]
 
