@@ -4,6 +4,13 @@
             <div class="text--primary entry-body" v-html="markdown"></div>
             <h1 class="entry-title light-green--text text--darken-3">Portfolio</h1>
 
+            <ol class="timeline">
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+            </ol>
         </v-card>
     </div>
 </template>
@@ -43,5 +50,37 @@
     .entry-title {
         font-weight: 600;
         line-height: 120%;
+        margin-top: 12px;
+    }
+
+
+    ol.timeline  {
+        list-style-type: none;
+    }
+
+    .timeline li {
+        position: relative;
+        margin: 0;
+        padding-bottom: 1em;
+        padding-left: 20px;
+    }
+
+    .timeline li:before {
+        content: '';
+        background-color: #7cb342;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 6px;
+        width: 3px;
+    }
+
+    .timeline li:after {
+        content: '';
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' aria-hidden='true' viewBox='0 0 32 32' focusable='false'%3E%3Ccircle stroke='none' fill='%237cb342' cx='16' cy='16' r='10'%3E%3C/circle%3E%3C/svg%3E");
+        position: absolute;
+        left: 0;
+        height: 15px;
+        width: 15px;
     }
 </style>
