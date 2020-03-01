@@ -4,6 +4,21 @@
             <div class="text--primary entry-body" v-html="markdown"></div>
             <h1 class="entry-title light-green--text text--darken-3">Portfolio</h1>
 
+            <h2>About</h2>
+
+            <!--
+            @kimihiro_n
+            1988
+            Python
+            Go
+            Android/Java, Kotlin
+            AWS
+            GCP
+            Docker
+            Django, FastAPI
+
+
+
             <ol class="timeline">
                 <li>test</li>
                 <li>test</li>
@@ -11,6 +26,7 @@
                 <li>test</li>
                 <li>test</li>
             </ol>
+            -->
         </v-card>
     </div>
 </template>
