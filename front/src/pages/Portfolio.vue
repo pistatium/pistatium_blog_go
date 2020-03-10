@@ -14,9 +14,22 @@
             </p>
 
             <p>
-                 イラスト作成もやります。
-                 
+                趣味でイラスト作成も最近やってます。
+                もっとスキル身につけたい。
             </p>
+
+            <p>
+                Pistatium とは。
+
+            </p>
+
+            <ol class="timeline">
+                <li>プロフィールアイコン</li>
+                <li></li>
+                <li>test</li>
+                <li>test</li>
+                <li>test</li>
+            </ol>
             <!--
             @kimihiro_n
             1988
@@ -30,13 +43,7 @@
 
 
 
-            <ol class="timeline">
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
-            </ol>
+
             -->
         </v-card>
     </div>
