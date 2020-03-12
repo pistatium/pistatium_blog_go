@@ -18,14 +18,14 @@
                 もっとスキル身につけたい。
             </p>
 
-            <p>
-                Pistatium とは。
-
-            </p>
-
             <ol class="timeline">
-                <li>プロフィールアイコン</li>
-                <li></li>
+                <li>
+                    <img src="">
+                    <h3>プロフィールアイコン</h3>
+                    プロフィールにつかってるアイコンです。
+                    Python のへびと Android のドロイドくんをベースに描きました。
+                </li>
+                <li>技術書典</li>
                 <li>test</li>
                 <li>test</li>
                 <li>test</li>
@@ -40,9 +40,6 @@
             GCP
             Docker
             Django, FastAPI
-
-
-
 
             -->
         </v-card>
