@@ -20,12 +20,17 @@
 
             <ol class="timeline">
                 <li>
-                    <img src="">
+                    <img src="/img/profile.png">
                     <h3>プロフィールアイコン</h3>
                     プロフィールにつかってるアイコンです。
-                    Python のへびと Android のドロイドくんをベースに描きました。
+                    最初はもうちょっとリアルよりでしたが今の形に落ち着きました。
                 </li>
-                <li>技術書典</li>
+                <li>
+                    <img src="">
+                    <h3>技術書典</h3>
+                    技術同人誌の表紙絵を担当しました。
+
+                </li>
                 <li>test</li>
                 <li>test</li>
                 <li>test</li>
