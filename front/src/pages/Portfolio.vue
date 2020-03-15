@@ -26,14 +26,12 @@
                     最初はもうちょっとリアルよりでしたが今の形に落ち着きました。
                 </li>
                 <li>
-                    <img src="">
+                    <img src="https://kimihiro-n.appspot.com:/photo/show/1584254160610085176.jpg">
                     <h3>技術書典</h3>
                     技術同人誌の表紙絵を担当しました。
-
+                    初DTP作業ですがいい感じに出力できてよかったです。
                 </li>
-                <li>test</li>
-                <li>test</li>
-                <li>test</li>
+
             </ol>
             <!--
             @kimihiro_n
