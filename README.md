@@ -1,6 +1,6 @@
 # pistatium_blog_go
 
-https://kimihiro-n.appspot.com/
+https://pistatium.dev
 
 
 このブログのソースコードです。

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"html/template"
@@ -60,6 +61,7 @@ func (s *Server) Index(gc *gin.Context) {
 		"entriesJSON": template.JS(entriesJSON),
 		"entryJSON": template.JS(entryJSON),
 		"thumbnail": thumbnail,
+		"url": fmt.Sprintf("https://%s%s", APP_DOMAIN, path),
 	}
 	gc.HTML(http.StatusOK, "index.html", params)
 }
@@ -67,7 +69,7 @@ func (s *Server) Index(gc *gin.Context) {
 func (s *Server) Sitemap(gc *gin.Context) {
 	ctx := gc.Request.Context()
 	sm := stm.NewSitemap(1)
-	sm.SetDefaultHost("https://kimihiro-n.appspot.com")
+	sm.SetDefaultHost("https://" + APP_DOMAIN)
 
 	sm.Create()
 
