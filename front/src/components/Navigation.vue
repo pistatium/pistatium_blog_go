@@ -15,15 +15,15 @@
                     </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item link to="/portfolio">
-                    <v-list-item-action>
-                        <v-icon>mdi-notebook-outline</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>Portfolio</v-list-item-title>
-                        <v-list-item-subtitle>About works.</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
+<!--                <v-list-item link to="/portfolio">-->
+<!--                    <v-list-item-action>-->
+<!--                        <v-icon>mdi-notebook-outline</v-icon>-->
+<!--                    </v-list-item-action>-->
+<!--                    <v-list-item-content>-->
+<!--                        <v-list-item-title>Portfolio</v-list-item-title>-->
+<!--                        <v-list-item-subtitle>About works.</v-list-item-subtitle>-->
+<!--                    </v-list-item-content>-->
+<!--                </v-list-item>-->
 
                 <v-divider></v-divider>
                 <v-subheader>Links</v-subheader>
