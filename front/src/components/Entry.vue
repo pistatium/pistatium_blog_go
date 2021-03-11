@@ -268,6 +268,7 @@
         color: #ffffff;
         margin-top: 8px;
         display: block;
+        overflow-x: auto;
     }
 
     .v-application .entry-body code {
