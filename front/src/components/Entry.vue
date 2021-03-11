@@ -267,6 +267,7 @@
         line-height: 120%;
         color: #ffffff;
         margin-top: 8px;
+        display: block;
     }
 
     .v-application .entry-body code {
@@ -286,4 +287,5 @@
         padding-left: 12px;
         font-size: 80%;
     }
+
 </style>
