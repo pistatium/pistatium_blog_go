@@ -17,7 +17,7 @@ jobs:
           command: yarn install --frozen-lockfile
           working_directory: front
       - run:
-          command: yarn build
+          command: NODE_OPTIONS=--openssl-legacy-provider yarn build
           working_directory: front
 
           #- run:
