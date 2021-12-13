@@ -1,4 +1,4 @@
-runtime: go112
+runtime: go115
 
 default_expiration: "1d"
 
@@ -19,6 +19,9 @@ handlers:
   - url: /ads.txt
     static_files: front/dist/ads.txt
     upload: front/dist/ads.txt
+  - url: /robots.txt
+    static_files: front/public/robots.txt
+    upload: front/public/robots.txt
   - url: /favicon.ico
     static_files: front/public/favicon.ico
     upload: front/public/favicon.ico
