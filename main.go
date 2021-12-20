@@ -65,7 +65,7 @@ func main() {
 	r.POST("/admin/api/login", server.AdminLogin)
 
 	r.GET("/sitemap.xml", server.Sitemap)
-	r.GET("/", server.Index)
+	r.NoRoute(server.Index)
 
 	log.Printf("Listening on port %s", port)
 	entryPoint := fmt.Sprintf("0.0.0.0:%s", port)

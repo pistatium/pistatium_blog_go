@@ -29,7 +29,11 @@ func (s *Server) Index(gc *gin.Context) {
 	entriesJSON := ""
 	thumbnail := ""
 	switch {
-	case path == "/": {
+	case strings.Contains(path, "."):
+		gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
+		gc.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+		return
+	case path == "/":
 		title = "Top"
 		entries, err := s.Entries.GetEntries(ctx, 0, EntriesPerPage, true)
 		if err != nil {
@@ -40,7 +44,6 @@ func (s *Server) Index(gc *gin.Context) {
 			println(err)
 		}
 		entriesJSON = string(esj)
-	}
 	case strings.HasPrefix(path, "/show/"):
 		entryID := strings.Replace(path, "/show/", "", 1)
 		entry, err := s.Entries.GetEntry(ctx, entryID)
@@ -63,6 +66,7 @@ func (s *Server) Index(gc *gin.Context) {
 		"thumbnail": thumbnail,
 		"url": fmt.Sprintf("https://%s%s", APP_DOMAIN, path),
 	}
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.HTML(http.StatusOK, "index.html", params)
 }
 
