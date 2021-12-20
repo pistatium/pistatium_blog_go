@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const ImageCacheDuration = 60 *  60 * 24 * 30
+
 func (s *Server) GetPhoto(gc *gin.Context) {
 	ctx := gc.Request.Context()
 
@@ -21,6 +23,6 @@ func (s *Server) GetPhoto(gc *gin.Context) {
 	if contentType == "" {
 		contentType = "image/jpeg"
 	}
-	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", ImageCacheDuration))
 	gc.Data(http.StatusOK, contentType, photo.Image)
 }
