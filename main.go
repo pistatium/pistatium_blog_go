@@ -44,6 +44,8 @@ func main() {
 
 	r := gin.Default()
 
+	r.Use(handlers.DomainRedirectMiddleware())
+
 	store := cookie.NewStore([]byte(server.Conf.Secret))
 	r.Use(sessions.Sessions("SESSION", store))
 
