@@ -82,7 +82,7 @@ func (s *Server) Sitemap(gc *gin.Context) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	sm.Add(stm.URL{{"loc", "/"}, {"changefreq", "daily"}})
+	sm.Add(stm.URL{{"loc", "/"}, {"changefreq", "weekly"}})
 	for _, entry := range entries {
 		lastMod := entry.Datetime
 		if entry.Updated != nil {
@@ -90,10 +90,11 @@ func (s *Server) Sitemap(gc *gin.Context) {
 		}
 		sm.Add(stm.URL{
 			{"loc", "/show/" + entry.Id},
-			{"changefreq", "daily"},
+			{"changefreq", "weekly"},
 			{"lastmod", lastMod.Format(time.RFC3339)},
 		})
 	}
 
+	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
 	gc.Data(http.StatusOK, "text/xml", sm.XMLContent())
 }
