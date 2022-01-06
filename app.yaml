@@ -13,6 +13,12 @@ handlers:
   - url: /robots.txt
     static_files: front/public/robots.txt
     upload: front/public/robots.txt
+  - url: /app-ads.txt
+    static_files: front/public/app-ads.txt
+    upload: front/public/app-ads.txt
+  - url: /rss.xml
+    static_files: front/public/rss.xml
+    upload: front/public/rss.xml
   - url: /favicon.ico
     static_files: front/public/favicon.ico
     upload: front/public/favicon.ico

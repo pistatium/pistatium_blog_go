@@ -1,6 +1,6 @@
 module github.com/pistatium/pistatium_blog_go
 
-go 1.11
+go 1.17
 
 require (
 	cloud.google.com/go/datastore v1.0.0
