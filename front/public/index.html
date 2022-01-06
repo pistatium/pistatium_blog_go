@@ -7,10 +7,8 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>{{.title}} - Pistatium</title>
     <link rel="canonical" href="{{ .url }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/railscasts.min.css">
-    <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <link rel="stylesheet" rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <link rel="stylesheet" rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/railscasts.min.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3817632-9"></script>
     <script>
@@ -50,5 +48,21 @@
     <!-- built files will be auto injected -->
 
   </body>
+  <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+          t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+          t._e.push(f);
+      };
+
+      return t;
+  }(document, "script", "twitter-wjs"));</script>
 
 </html>
