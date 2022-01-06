@@ -15,6 +15,7 @@ import (
 const (
 	ProjectId                = "GOOGLE_CLOUD_PROJECT"
 	EnvKeyDatastoreProjectId = "DATASTORE_PROJECT_ID"
+	EnvKeyEnv                = "ENV"
 	EnvKeyPORT               = "PORT"
 	DefaultPort              = "8080"
 )
@@ -25,6 +26,8 @@ func main() {
 	if port == "" {
 		port = DefaultPort
 	}
+	env := os.Getenv(EnvKeyEnv)
+
 	projectID := os.Getenv(EnvKeyDatastoreProjectId) // Set by docker-compose
 	if projectID == "" {
 		projectID = os.Getenv(ProjectId) // Set by App Engine server
@@ -48,8 +51,9 @@ func main() {
 
 	store := cookie.NewStore([]byte(server.Conf.Secret))
 	r.Use(sessions.Sessions("SESSION", store))
-
-	r.LoadHTMLGlob("front/dist/*.html")
+	if env != "dev" {
+		r.LoadHTMLGlob("front/dist/*.html")
+	}
 
 	r.GET("/api/entries", server.GetEntries)
 

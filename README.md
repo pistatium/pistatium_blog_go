@@ -13,3 +13,13 @@ https://pistatium.dev
 App Engine を使う理由
 * [Qiita: App Engine を布教したくて Go + Datastore の開発環境を Docker Compose でシュッと立ち上げた話](https://qiita.com/kimihiro_n/items/5d373440acc48488a837)
 
+
+## 開発環境セットアップ
+
+```shell
+docker-compose up -d
+
+python3 init_local.py
+
+cd front; yarn run serve
+```

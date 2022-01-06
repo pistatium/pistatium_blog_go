@@ -3,6 +3,10 @@ from google.cloud import datastore
 import google
 from google.auth.credentials import AnonymousCredentials
 
+"""
+export DATASTORE_EMULATOR_HOST=0.0.0.0:8059
+export PROJECT_ID=local-app
+"""
 
 def create_conf(client):
     # gcloud auth application-default login
@@ -31,10 +35,9 @@ def create_user(client):
 
 if __name__ == '__main__':
     client = datastore.Client(
-        credentials=AnonymousCredentials(),
         _http=None,
         project=os.environ.get('DATASTORE_PROJECT_ID')
     )
 
-    #create_user(client)
+    create_user(client)
     create_conf(client)
