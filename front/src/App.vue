@@ -49,7 +49,8 @@
 
 <style scoped>
     .container {
-        padding: 0px;
+        padding: 0;
+        margin-top: 32px;
         font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
         font-size: 16x;
     }
