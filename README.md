@@ -19,7 +19,12 @@ App Engine を使う理由
 ```shell
 docker-compose up -d
 
+export DATASTORE_EMULATOR_HOST=0.0.0.0:8059
+export PROJECT_ID=local-app
+export DATASTORE_PROJECT_ID=local-app
 python3 init_local.py
 
-cd front; yarn run serve
+cd front; 
+yarn
+yarn run serve
 ```

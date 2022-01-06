@@ -95,7 +95,7 @@
 
 <script>
     export default {
-        name: "Navigation",
+        name: "GlobalNavigation",
         data: () => ({
             drawer: null,
         }),

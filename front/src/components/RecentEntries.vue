@@ -61,6 +61,7 @@
     .box {
         border-top: 4px solid #7cb342;
         padding: 0;
+        min-height: 400px;
     }
     .box .head {
         font-weight: 600;

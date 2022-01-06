@@ -3,8 +3,7 @@
         <div class="headline page-header">新着エントリ一覧 <span v-if="page!==0">(page {{page}})</span></div>
         <div v-if="!empty">
             <Entry v-for="(entry, index) in entries" v-bind:key="entry.id" v-bind:entry=entry v-bind:index="index"
-                   v-bind:show_detail="false"></Entry>
-
+                   v-bind:show_detail="false" class="entry"></Entry>
 
         </div>
         <div v-else class="no-entry" border="left">
@@ -12,10 +11,10 @@
         </div>
 
         <div class="text-center" v-if="!this.$root.loading && !this.$root.error">
-            <v-btn class="ma-2" tile color="green" dark v-bind:to=prev_page v-if="page > 0">&lt;&lt; Newer
+            <v-btn class="ma-2" tile outlined color="green" dark v-bind:to=prev_page v-if="page > 0">&lt;&lt; もっと新しい記事へ
             </v-btn>
-            <v-btn class="ma-2" tile color="green" dark to="/" v-if="page !== 0">^ Top</v-btn>
-            <v-btn class="ma-2" tile color="green" dark v-bind:to=next_page v-if="!empty">&gt;&gt; Older</v-btn>
+            <v-btn class="ma-2" tile outlined color="green" dark to="/" v-if="page !== 0">^ Top</v-btn>
+            <v-btn class="ma-2" tile outlined color="green" dark v-bind:to=next_page v-if="!empty">&gt;&gt; もっと古い記事へ</v-btn>
 
         </div>
     </div>
@@ -27,7 +26,7 @@
 
 
     export default {
-        name: 'Entries',
+        name: 'EntryList',
         components: {Entry},
         data: () => ({
             entries: [],
@@ -99,15 +98,18 @@
     }
 
     .page-header {
-        color: #818181;
+        color: #b6adad;
         font-weight: bold;
         text-align: center;
-        margin-top: 32px;
+        margin-top: 48px;
     }
 
     .no-entry {
         margin: 72px 0;
         text-align: center;
-        color: #558b2f;
+        color: #9f9f9f;
+    }
+    .entry {
+
     }
 </style>

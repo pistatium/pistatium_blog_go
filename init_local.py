@@ -6,6 +6,7 @@ from google.auth.credentials import AnonymousCredentials
 """
 export DATASTORE_EMULATOR_HOST=0.0.0.0:8059
 export PROJECT_ID=local-app
+export DATASTORE_PROJECT_ID=local-app
 """
 
 def create_conf(client):

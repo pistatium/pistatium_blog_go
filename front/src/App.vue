@@ -2,7 +2,7 @@
     <v-app id="app">
         <Navigation></Navigation>
 
-        <v-container grid-list-lg class="main">
+        <v-container grid-list-lg class="main container">
             <v-card loading v-if="this.$root.loading">
                 <v-card-text class="loading-body">
                     Loading...
@@ -21,7 +21,7 @@
             <router-view></router-view>
 
             <footer>
-                ©2019 pistatium.
+                ©2022 pistatium.
             </footer>
         </v-container>
 
@@ -49,8 +49,9 @@
 
 <style scoped>
     .container {
-        margin-top: 36px;
         padding: 0px;
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        font-size: 16x;
     }
     .main {
         max-width: 740px;
@@ -60,6 +61,7 @@
         font-size: 14px;
         text-align: center;
         font-weight: lighter;
+        color: #c3c3c3;
     }
     .v-alert {
         padding: 24px 0;
@@ -69,4 +71,3 @@
         margin: 20px;
     }
 </style>
-

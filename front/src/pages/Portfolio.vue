@@ -51,7 +51,7 @@
 
 <script>
     export default {
-        name: 'Portfolio',
+        name: 'MyPortfolio',
         data: () => ({
             drawer: null,
         }),

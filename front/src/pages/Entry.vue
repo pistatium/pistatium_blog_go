@@ -77,7 +77,7 @@
 
 <style scoped>
     .single-entry {
-        margin-top: 32px;
+        margin-top: 64px;
     }
     .ads-outer {
         margin: 10px 0;

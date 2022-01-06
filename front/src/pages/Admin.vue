@@ -116,7 +116,7 @@
     import Entry from "../components/Entry";
 
     export default {
-        name: 'Admin',
+        name: 'AdminConsole',
         components: {
             Entry,
             AdminLogin,

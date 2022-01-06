@@ -23,9 +23,9 @@ services:
       - .:/opt/app
     ports:
       - 8001:8000
-    links:
-      - datastore:datastore
-    command: bash -c "go get github.com/pilu/fresh && fresh -c .fresh.conf"
+    depends_on:
+      - datastore
+    command: bash -c "go mod vendor; go get github.com/pilu/fresh && fresh -c .fresh.conf"
 
   datastore:
     image: google/cloud-sdk
