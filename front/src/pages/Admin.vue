@@ -91,15 +91,20 @@
             <v-card>
                 <v-card-title>画像アップロード</v-card-title>
                 <v-card-actions>
-                    <v-form>
-                        <v-file-input name="file" accept="image/*" label="File input" v-model="file"></v-file-input>
-                        <v-btn @click="this.submitImage">Upload</v-btn>
+                    <v-form >
+                        <v-file-input name="file" accept="image/*" label="File input" v-model="file" @change="submitImage"></v-file-input>
                     </v-form>
                 </v-card-actions>
                 <v-card-text>
                     <div class="images" v-for="img in this.images" v-bind:key="img">
                         <img v-bind:src="img">
-                        <input readonly v-bind:value="absPath(img)" type="text" class="pathbox" onclick="this.select();">
+                        <div>
+                          URL: <input readonly v-bind:value="absPath(img)" type="text" class="pathbox" onclick="this.select();">
+
+                        </div>
+                        <div>
+                          Tag: <input readonly v-bind:value="imgTag(img)" type="text" class="pathbox" onclick="this.select();">
+                        </div>
                     </div>
                 </v-card-text>
 
@@ -160,19 +165,20 @@
                 };
                 axios.post('/admin/api/photos', formData, config).then((res) => {
                     console.log(res)
-                    this.images.push(res.data.path)
+                    this.images.unshift(res.data.path)
                 }).catch((err) => {
                     alert(err)
                 })
             },
             absPath(path) {
                 let port = window.location.port
-                if (port === '443') {
-                    port = ''
-                } else {
-                    port = ':' + port
+                if (port !== '') {
+                  port = ':' + port
                 }
                 return `${window.location.protocol}//${window.location.hostname}${port}${path}`
+            },
+            imgTag(path) {
+              return `<img src="${this.absPath(path)}" loading="lazy">`
             }
             // IMEが暴発するのでPEND
             // input_tab(e) {
