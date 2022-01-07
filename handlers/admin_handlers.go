@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-const ImageMaxSize = 720
+const ImageMaxSize = 680
 
 type LoginForm struct {
 	Username string `json:"username"`
@@ -142,7 +142,7 @@ func generatePhoto(bs []byte, filename string) (*repos.Photo, error) {
 				return nil, err
 			}
 		case "jpeg":
-			err = jpeg.Encode(&buf, dst, &jpeg.Options{Quality: 85})
+			err = jpeg.Encode(&buf, dst, nil)
 			if err != nil {
 				return nil, err
 			}
