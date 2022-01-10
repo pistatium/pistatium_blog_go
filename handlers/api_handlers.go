@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	CacheDuration  = 60 * 10
+	CacheDuration  = 60 * 30
 	EntriesPerPage = 10
 )
 

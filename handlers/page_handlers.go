@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+const 404CacheDuration = 60 * 60 * 12
 func Ellipsis(length int, text string) string {
 	r := []rune(text)
 	if len(r) > length {
@@ -30,7 +31,7 @@ func (s *Server) Index(gc *gin.Context) {
 	thumbnail := ""
 	switch {
 	case strings.Contains(path, "."):
-		gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))
+		gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", 404CacheDuration))
 		gc.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 		return
 	case path == "/":
