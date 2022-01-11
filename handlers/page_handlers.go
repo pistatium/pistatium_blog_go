@@ -53,7 +53,7 @@ func (s *Server) Index(gc *gin.Context) {
 			gc.String(500, "Something wrong")
 			return
 		}
-		if entry == nil{
+		if entry.Id == ""{
 			gc.String(404, "Page not found")
 			return
 		}

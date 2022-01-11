@@ -89,8 +89,13 @@ func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry
 	k := datastore.IDKey("Blog", int64(iid), nil)
 	e := new(Entry)
 	err = client.Get(ctx, k, e)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
-		return nil, err
+	if err != nil {
+		if err == datastore.ErrNoSuchEntity {
+			//entityが存在しない場合
+			return e, nil
+		} else {
+			return nil, err
+		}
 	}
 	e.Id = id
 	return e, nil
