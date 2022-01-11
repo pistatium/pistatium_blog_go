@@ -49,11 +49,18 @@ func (s *Server) Index(gc *gin.Context) {
 	case strings.HasPrefix(path, "/show/"):
 		entryID := strings.Replace(path, "/show/", "", 1)
 		entry, err := s.Entries.GetEntry(ctx, entryID)
-		if err == nil {
-			title = entry.Title
-			description = Ellipsis(12, entry.Body)
-			thumbnail = entry.Thumbnail
+		if err != nil {
+			gc.String(500, "Something wrong")
+			return
 		}
+		if entry == nil{
+			gc.String(404, "Page not found")
+			return
+		}
+
+		title = entry.Title
+		description = Ellipsis(12, entry.Body)
+		thumbnail = entry.Thumbnail
 		ej, _ := json.Marshal(entry)
 		entryJSON = string(ej)
 	default:
