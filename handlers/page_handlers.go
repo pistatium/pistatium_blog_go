@@ -50,6 +50,7 @@ func (s *Server) Index(gc *gin.Context) {
 		entryID := strings.Replace(path, "/show/", "", 1)
 		entry, err := s.Entries.GetEntry(ctx, entryID)
 		if err != nil {
+			fmt.Printf("error on get entry: %+v", err)
 			gc.String(500, "Something wrong")
 			return
 		}
