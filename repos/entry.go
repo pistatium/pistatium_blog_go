@@ -93,6 +93,9 @@ func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry
 		if err == datastore.ErrNoSuchEntity {
 			//entityが存在しない場合
 			return e, nil
+		}
+		if err == err.(*datastore.ErrFieldMismatch) {
+			// datastore.ErrFieldMismatch は存在しないカラムをマッピングしようとするとでるので無視
 		} else {
 			return nil, err
 		}
