@@ -6,6 +6,7 @@ import Admin from "./pages/Admin"
 import vuetify from './plugins/vuetify'
 import Portfolio from "./pages/Portfolio"
 import VueRouter from 'vue-router'
+import RandomGenerator from "./pages/RandomGenerator"
 
 import Adsense from 'vue-google-adsense/dist/Adsense.min.js'
 import InArticleAdsense from 'vue-google-adsense/dist/InArticleAdsense.min.js'
@@ -21,6 +22,7 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
+    {path: "/tools/random_generator", component: RandomGenerator},
     {path: '/admin/', component: Admin},
     {path: '/show/:id', component: Entry},
     {path: '/portfolio', component: Portfolio},

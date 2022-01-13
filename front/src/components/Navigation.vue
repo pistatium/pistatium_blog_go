@@ -63,7 +63,7 @@
                    style="border-radius: 32px; border: #ffffff 1px solid;background: #ffffff"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title>kimhiro_n</v-list-item-title>
+            <v-list-item-title>kimihiro_n</v-list-item-title>
             <v-list-item-subtitle>
               <a href="https://twitter.com/kimihiro_n" target="_blank" rel="noopener">Twitter</a> /
               <a href="https://github.com/pistatium" target="_blank" rel="noopener">GitHub</a> /
@@ -112,8 +112,15 @@
             <v-list-item-title>その他のアプリ</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-divider style="margin: 4px 0 12px 0"></v-divider>
+
+        <v-subheader style="height: 20px">Tools</v-subheader>
+        <v-list-item link to="/tools/random_generator">パスワード生成ツール</v-list-item>
       </v-list>
     </v-navigation-drawer>
+
+
   </div>
 </template>
 
