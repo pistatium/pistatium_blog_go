@@ -95,6 +95,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin-top: 64px;
+}
 .monospace {
   font-family: "Courier New", Consolas, monospace;
 }
@@ -157,8 +160,14 @@ export default {
   display: flex;
   flex-direction: row;
 }
+@media screen and (max-width: 600px) {
+  .wrap {
+    flex-direction: column;
+  }
+}
 .description {
   flex: 1;
+  min-width: 300px;
   margin: 12px;
   font-size: 14px;
 }
