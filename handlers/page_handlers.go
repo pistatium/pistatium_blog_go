@@ -75,7 +75,7 @@ func (s *Server) Index(gc *gin.Context) {
 		"titleEnc":    url.PathEscape(title),
 		"entriesJSON": template.JS(entriesJSON),
 		"entryJSON": template.JS(entryJSON),
-		"entryMD": entryMD,
+		"entryMD": template.HTML(entryMD),
 		"thumbnail": thumbnail,
 		"url": fmt.Sprintf("https://%s%s", APP_DOMAIN, path),
 	}
