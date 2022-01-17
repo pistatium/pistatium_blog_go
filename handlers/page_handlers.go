@@ -30,6 +30,7 @@ func (s *Server) Index(gc *gin.Context) {
 	entryJSON := ""
 	entriesJSON := ""
 	thumbnail := ""
+	entryMD := ""
 	switch {
 	case strings.Contains(path, "."):
 		gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", NotFoundCacheDuration))
@@ -61,6 +62,7 @@ func (s *Server) Index(gc *gin.Context) {
 
 		title = entry.Title
 		description = Ellipsis(12, entry.Body)
+		entryMD = strings.Replace(fmt.Sprintf("%s\n%s",entry.Body, entry.More),"\n", "<br>", 0)
 		thumbnail = entry.Thumbnail
 		ej, _ := json.Marshal(entry)
 		entryJSON = string(ej)
@@ -73,6 +75,7 @@ func (s *Server) Index(gc *gin.Context) {
 		"titleEnc":    url.PathEscape(title),
 		"entriesJSON": template.JS(entriesJSON),
 		"entryJSON": template.JS(entryJSON),
+		"entryMD": entryMD,
 		"thumbnail": thumbnail,
 		"url": fmt.Sprintf("https://%s%s", APP_DOMAIN, path),
 	}
