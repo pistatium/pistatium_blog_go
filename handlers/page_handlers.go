@@ -62,7 +62,7 @@ func (s *Server) Index(gc *gin.Context) {
 
 		title = entry.Title
 		description = Ellipsis(12, entry.Body)
-		entryMD = strings.Replace(fmt.Sprintf("%s\n%s",entry.Body, entry.More),"\n", "<br>", 0)
+		entryMD = strings.Replace(fmt.Sprintf("%s\n%s",entry.Body, entry.More),"\n", "<br>", -1)
 		thumbnail = entry.Thumbnail
 		ej, _ := json.Marshal(entry)
 		entryJSON = string(ej)
