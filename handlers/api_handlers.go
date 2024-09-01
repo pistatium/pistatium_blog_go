@@ -24,7 +24,7 @@ func (s *Server) GetEntry(gc *gin.Context) {
 		gc.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	if ! entry.Public {
+	if !entry.Public {
 		gc.JSON(http.StatusForbidden, gin.H{"error": "private"})
 	}
 	gc.Header("Cache-Control", fmt.Sprintf("public, max-age=%d", CacheDuration))

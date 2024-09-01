@@ -65,17 +65,17 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 		Limit(limit).
 		Offset(offset)
 	entries := make([]*Entry, 0, limit)
-	keys, err := client.GetAll(ctx, q, &entries)
-	if err != nil && err != err.(*datastore.ErrFieldMismatch) {
-		return nil, err
-	}
-
-	for i, key := range keys {
-		entries[i].Id = strconv.FormatInt(key.ID, 10)
-	}
 	return entries, nil
+	//keys, err := client.GetAll(ctx, q, &entries)
+	//if err != nil && err != err.(*datastore.ErrFieldMismatch) {
+	//	return nil, err
+	//}
+	//
+	//for i, key := range keys {
+	//	entries[i].Id = strconv.FormatInt(key.ID, 10)
+	//}
+	//return entries, nil
 }
-
 
 func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry, error) {
 	client, err := d.getDatastoreClient(ctx)
@@ -86,22 +86,23 @@ func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry
 	if err != nil {
 		return nil, err
 	}
-	k := datastore.IDKey("Blog", int64(iid), nil)
-	e := new(Entry)
-	err = client.Get(ctx, k, e)
-	if err != nil {
-		if err == datastore.ErrNoSuchEntity {
-			//entityが存在しない場合
-			return e, nil
-		}
-		if err == err.(*datastore.ErrFieldMismatch) {
-			// datastore.ErrFieldMismatch は存在しないカラムをマッピングしようとするとでるので無視
-		} else {
-			return nil, err
-		}
-	}
-	e.Id = id
-	return e, nil
+	return nil, nil
+	//k := datastore.IDKey("Blog", int64(iid), nil)
+	//e := new(Entry)
+	//err = client.Get(ctx, k, e)
+	//if err != nil {
+	//	if err == datastore.ErrNoSuchEntity {
+	//		//entityが存在しない場合
+	//		return e, nil
+	//	}
+	//	if err == err.(*datastore.ErrFieldMismatch) {
+	//		// datastore.ErrFieldMismatch は存在しないカラムをマッピングしようとするとでるので無視
+	//	} else {
+	//		return nil, err
+	//	}
+	//}
+	//e.Id = id
+	//return e, nil
 }
 
 //func (d DatastoreEntryRepoImpl) CreateEntry(ctx context.Context, entry Entry) error {
