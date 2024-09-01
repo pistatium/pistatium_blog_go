@@ -50,22 +50,23 @@ func (d DatastoreEntryRepoImpl) getDatastoreClient(ctx context.Context) (client 
 }
 
 func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limit int, publicOnly bool) ([]*Entry, error) {
-	client, err := d.getDatastoreClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// 最新10件取得
-	q := datastore.NewQuery("Blog")
-
-	if publicOnly {
-		q = q.Filter("public =", true)
-	}
-	q = q.Order("-datetime").
-		Limit(limit).
-		Offset(offset)
 	entries := make([]*Entry, 0, limit)
 	return entries, nil
+	//client, err := d.getDatastoreClient(ctx)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//
+	//// 最新10件取得
+	//q := datastore.NewQuery("Blog")
+	//
+	//if publicOnly {
+	//	q = q.Filter("public =", true)
+	//}
+	//q = q.Order("-datetime").
+	//	Limit(limit).
+	//	Offset(offset)
+	//entries := make([]*Entry, 0, limit)
 	//keys, err := client.GetAll(ctx, q, &entries)
 	//if err != nil && err != err.(*datastore.ErrFieldMismatch) {
 	//	return nil, err
@@ -78,15 +79,15 @@ func (d DatastoreEntryRepoImpl) GetEntries(ctx context.Context, offset int, limi
 }
 
 func (d DatastoreEntryRepoImpl) GetEntry(ctx context.Context, id string) (*Entry, error) {
-	client, err := d.getDatastoreClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	iid, err := strconv.Atoi(id)
-	if err != nil {
-		return nil, err
-	}
 	return nil, nil
+	//client, err := d.getDatastoreClient(ctx)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//iid, err := strconv.Atoi(id)
+	//if err != nil {
+	//	return nil, err
+	//}
 	//k := datastore.IDKey("Blog", int64(iid), nil)
 	//e := new(Entry)
 	//err = client.Get(ctx, k, e)
